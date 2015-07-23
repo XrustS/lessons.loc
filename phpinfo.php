@@ -1,3 +1,6 @@
 <?php
 
-phpinfo();
+if ($_REQUEST['INFO']== "1")
+{
+    phpinfo();
+}
