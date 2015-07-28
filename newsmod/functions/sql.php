@@ -18,21 +18,21 @@ function mysqlCleanSpc($query)
 };
 function mysqlQwery($query, $status=0) // $status == 0 - select
 {
-    mysqlInitDB();
+
     $query = mysqlCleanSpc($query);
     $result = mysql_query($query);
     if (!$result){
-        die('Ошибочный запрос: '.mysql_errno());
+        die("Ошибочный запрос: $query ".mysql_errno());
     }
-    if($status!=0){
-       mysql_close($result);
-    } else  { return $result; };
+    if($status==0){
+    return $result; }
 };
 function mysql_fetchAll($query){
+    $link = mysqlInitDB();
     $result = mysqlQwery($query);
-    while($row=mysql_fetch_row($result)){
+    while($row=mysql_fetch_assoc($result)){
         $arr[] = $row;
     };
-    mysql_close($result);
+    mysql_close($link);
     return $arr;
 };

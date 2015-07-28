@@ -1,18 +1,16 @@
 <?php
-/**
- * Error report
- */
-ini_set('display_errors',1);
-ini_set('display_startup_errors',1);
-error_reporting(-1);
+
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 
 include_once __DIR__.'/../functions/sql.php';
-
-$sql = "SELECT *
-        FROM news";
-$row=null;
+$sql = 'select * from news;';
 $row = mysql_fetchAll($sql);
-?> <pre>
-<?php
-var_dump($row);
-?></pre>
+//var_dump($row);
+if(isset($_GET)&&empty($_GET['id'])){
+    
+}
+foreach($row as $item){
+   echo '<b>'.$item['title'].'</b><br/>';
+   echo $item['Text'].'<br/>';
+}
