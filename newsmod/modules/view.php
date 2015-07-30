@@ -6,11 +6,21 @@ ini_set("display_errors", 1);
 include_once __DIR__.'/../functions/sql.php';
 $sql = 'select * from news;';
 $row = mysql_fetchAll($sql);
-//var_dump($row);
-if(isset($_GET)&&empty($_GET['id'])){
-    
-}
+$id=htmlspecialchars($_GET['id']);
+if ($id<=count($row)&&$id>0)
+{?>
+    <div class="news">
+        <h1><?php echo $row[$id-1]['title']; ?></h1>
+        <p><?php echo $row[$id-1]['Text']; ?></p>
+    </div>
+<?php
+
+} else{
 foreach($row as $item){
-   echo '<b>'.$item['title'].'</b><br/>';
-   echo $item['Text'].'<br/>';
-}
+    ?>
+    <div class="news">
+        <h1><?php echo $item['title']; ?></h1>
+        <p><?php echo $item['Text']; ?></p>
+    </div>
+    <?php
+}};

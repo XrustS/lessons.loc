@@ -1,6 +1,7 @@
 <?php
     /* функции для работы с БД
     */
+
 function mysqlInitDB()
 {
     $link = mysql_connect('localhost','root','');
