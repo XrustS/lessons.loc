@@ -18,21 +18,19 @@ function mysqlCleanSpc($query)
 };
 function mysqlQwery($query, $status=0) // $status == 0 - select
 {
-
+    $link = mysqlInitDB();
     $query = mysqlCleanSpc($query);
-    $result = mysql_query($query);
+		$sql = "INSERT INTO news (title, Text, Pic) VALUES('NNNNN', 'RRRRRR', 'E') ";
+    $result = mysql_query($sql);
     if (!$result){
         die("Ошибочный запрос: $query ".mysql_errno());
     }
     if($status==0){
-    return $result; }
-};
-function mysql_fetchAll($query){
-    $link = mysqlInitDB();
-    $result = mysqlQwery($query);
-    while($row=mysql_fetch_assoc($result)){
-        $arr[] = $row;
-    };
+        while($row=mysql_fetch_assoc($result)){
+            $arr[] = $row;
+        };
+        return $arr;
+    }
     mysql_close($link);
-    return $arr;
 };
+

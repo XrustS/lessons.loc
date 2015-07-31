@@ -1,11 +1,23 @@
 <?php
-
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
-include_once __DIR__.'/../functions/sql.php';
+$errlog =  false;
+if($errlog){
+    error_reporting(E_ALL);
+    ini_set("display_errors", 1);
+}
+require_once __DIR__.'/../functions/sql.php';
 $sql = 'select * from news;';
-$row = mysql_fetchAll($sql);
+$row = mysqlQwery($sql);
+/**
+ * Generating menu
+ */
+echo '<div class="nav">';
+$url=$_SERVER['PHP_SELF'];
+for($i=0; $i<=count($row);$i++){
+    $o=$i+1;
+   echo '<a href="'.$url.'?id='.$o.'">'.$row[$i]['title'].'</a>';
+};
+echo '</div>';
+
 $id=htmlspecialchars($_GET['id']);
 if ($id<=count($row)&&$id>0)
 {?>
