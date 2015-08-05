@@ -27,7 +27,8 @@ if(isset($_POST)&&!empty($_POST))
     $title = $_POST['title'];
     $text = $_POST['Text'];
     //$sql ="INSERT INTO news SET title='".$title."', Text='".$text."', Pic='dd'";
-	//$sql = "INSERT INTO news (title, Text, Pic) VALUES('NNNNN', 'RRRRRR', 'E') ";
+	$sql = 'insert into news (title, Text, Pic)
+            VALUES ("ww", "qq", "E")';
     mysqlQwery($sql,1);
     include_once __DIR__.'/view.php';
 }?>

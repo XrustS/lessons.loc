@@ -20,8 +20,7 @@ function mysqlQwery($query, $status=0) // $status == 0 - select
 {
     $link = mysqlInitDB();
     $query = mysqlCleanSpc($query);
-		$sql = "INSERT INTO news (title, Text, Pic) VALUES('NNNNN', 'RRRRRR', 'E') ";
-    $result = mysql_query($sql);
+    $result = mysql_query($query);
     if (!$result){
         die("Ошибочный запрос: $query ".mysql_errno());
     }
