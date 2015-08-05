@@ -14,7 +14,7 @@ echo '<div class="nav">';
 $url=$_SERVER['PHP_SELF'];
 for($i=0; $i<=count($row);$i++){
     $o=$i+1;
-   echo '<a href="'.$url.'?id='.$o.'">'.$row[$i]['title'].'</a><br>';
+   echo '<a href="'.$url.'?id='.$o.'">'.$row[$i]['title'].'</a><a id="dell" href="'.$url.'?action=del&id='.$o.'">dell</a>';
 };
 echo '</div>';
 
