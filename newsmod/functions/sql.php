@@ -13,13 +13,13 @@ function mysqlInitDB()
 };
 function mysqlCleanSpc($query)
 {
-    $query = htmlspecialchars($query);
-    return mysql_real_escape_string($query);
+    return $query = htmlspecialchars($query);
+     //mysql_real_escape_string($query);
 };
 function mysqlQwery($query, $status=0) // $status == 0 - select
 {
     $link = mysqlInitDB();
-    $query = mysqlCleanSpc($query);
+   // $query = mysqlCleanSpc($query);
     $result = mysql_query($query);
     if (!$result){
         die("Ошибочный запрос: $query ".mysql_errno());
