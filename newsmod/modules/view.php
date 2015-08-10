@@ -14,20 +14,21 @@ echo '<div class="nav">';
 $url=$_SERVER['PHP_SELF'];
 for($i=0; $i<=count($row);$i++){
     $o=$i+1;
-   echo '<a href="'.$url.'?id='.$o.'">'.$row[$i]['title'].'</a><a id="dell" href="'.$url.'?action=del&id='.$o.'">dell</a>';
+   echo '<a href="'.$url.'?id='.$o.'&action=detail">'.$row[$i]['title'].'</a><a id="dell" href="'.$url.'?action=del&id='.$o.'">dell</a>';
 };
 echo '</div>';
 
 $id=htmlspecialchars($_GET['id']);
-if ($id<=count($row)&&$id>0)
-{?>
+if (isset($_GET])&&($_GET['action']==="detail")&&($id<=count($row)&&$id>0))
+{
+    ?>
     <div class="news">
         <h1><?php echo $row[$id-1]['title']; ?></h1>
         <p><?php echo $row[$id-1]['Text']; ?></p>
     </div>
 <?php
 
-} else{
+}else{
 foreach($row as $item){
     ?>
     <div class="news">
@@ -35,4 +36,5 @@ foreach($row as $item){
         <p><?php echo $item['Text']; ?></p>
     </div>
     <?php
-}};
+    }
+};
