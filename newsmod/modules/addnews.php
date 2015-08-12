@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-</head>
-<body>
-	<?php
+<?php
 /**
  * Модуль добавления новой новости
  */
@@ -29,6 +22,5 @@ if(isset($_POST)&&!empty($_POST))
     echo $sql ="INSERT INTO news SET title='".$title."', Text='".$text."', Pic='dd'";
 
     mysqlQwery($sql,1);
-}?>
-</body>
-</html>
+}
+?>
