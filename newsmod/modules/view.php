@@ -1,9 +1,5 @@
 <?php
-$errlog =  false;
-if($errlog){
-    error_reporting(E_ALL);
-    ini_set("display_errors", 1);
-}
+
 require_once __DIR__.'/../functions/sql.php';
 $sql = 'select * from news;';
 $row = mysqlQwery($sql);
