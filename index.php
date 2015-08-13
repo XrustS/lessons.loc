@@ -1,7 +1,22 @@
 <?php
 /* Upload files*/
-function img_resize( $tmpname, $size, $save_dir, $save_name, $maxisheight = 0 )
+function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name, $maxisheight = 0 )
 {
+    function kvadrator ($ratio, $width_sour, $height_sour, $trim_percent){
+        if($width_sour => $height_sour){
+
+        }
+        $x1 = $width_sour * $trim_percent/100;
+        $x2 = $width_sour - $x1;
+        $width_tmp = $x2 - $x1;
+        $height_tmp = abs($ratio * $width_tmp);
+        $y1 = $height_sour/2 - $height_tmp/2;
+        $y2 = $y1 + $height_tmp;
+
+    }
+
+    if (($wr <= 0 ) || ($hr <= 0))
+        return false;
     $save_dir     .= ( substr($save_dir,-1) != "/") ? "/" : "";
     $gis        = getimagesize($tmpname);
     $type        = $gis[2];
@@ -16,7 +31,17 @@ function img_resize( $tmpname, $size, $save_dir, $save_name, $maxisheight = 0 )
     $x = imagesx($imorig);
     $y = imagesy($imorig);
 
-    $woh = (!$maxisheight)? $gis[0] : $gis[1] ;
+    $ratio =$wr/$hr;
+
+    if($x => $y){
+
+}
+
+
+
+
+
+  /*  $woh = (!$maxisheight)? $gis[0] : $gis[1] ;
 
     if($woh <= $size)
     {
@@ -32,7 +57,7 @@ function img_resize( $tmpname, $size, $save_dir, $save_name, $maxisheight = 0 )
             $aw = $size * $x / $y;
             $ah = $size;
         }
-    }
+    }*/
     $im = imagecreatetruecolor($aw,$ah);
     if (imagecopyresampled($im,$imorig , 0,0,0,0,$aw,$ah,$x,$y))
         if (imagejpeg($im, $save_dir.$save_name))
