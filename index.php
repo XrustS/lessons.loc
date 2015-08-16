@@ -53,12 +53,11 @@ function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name, $maxisheight = 0
     $ratio =$wr/$hr;
 
     $kvad = kvadrator($ratio,$x,$y,10);
-    var_dump($kvad);
+
     if(!isset($kvad)) return false;
 
     $im = imagecreatetruecolor($wr,$hr);
-    if (imagecopyresampled($im,$imorig , 0,0,$kvad['x1'],$kvad['y1'],$kvad['width'],$kvad['height'],$wr,$hr))
-//imagecopyresampled($dst_image, $src_image ,$dst_x ,$dst_y ,$src_x ,$src_y ,$dst_w ,$dst_h ,$src_w ,$src_h )
+    if (imagecopyresized($im,$imorig , 0,0,$kvad['x1'],$kvad['y1'],$wr,$hr,$kvad['width'],$kvad['height']))
         if (imagejpeg($im, $save_dir.$save_name))
             return true;
         else
@@ -72,7 +71,7 @@ if(isset($_FILES['pic'])){
     }
     $fname =time().".jpg";
     $tmpf = $_FILES['pic']['tmp_name'];
-    if(!img_resize($tmpf,500,250,'./thumsimg/',$fname)){
+    if(!img_resize($tmpf,200,150,'./thumsimg/',$fname)){
         echo "Произошла ошибка img_resize</br>";
         var_dump($_FILES);
     }else {
@@ -81,6 +80,18 @@ if(isset($_FILES['pic'])){
     exit();
     }
 }
+// вывод галереи
+
+$dir = "./thumsimg/";
+if(is_dir($dir)){
+    if($ddir = opendir($dir)){
+        while (($file = readdir($ddir)) !== false){
+            if($file != "."  && $file != "..") { echo '<img src="'.$dir.$file.'">';}
+        }
+        closedir($ddir);
+    }
+}
+
 ?>
 <!doctype html>
 <html lang="en">
