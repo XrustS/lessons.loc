@@ -62,7 +62,7 @@ function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name, $maxisheight = 0
     if(!isset($kvad)) return false;
 
     $im = imagecreatetruecolor($wr,$hr);
-    if (imagecopyresized($im,$imorig , 0,0,$kvad['x1'],$kvad['y1'],$wr,$hr,$kvad['width'],$kvad['height']))
+    if (imagecopyresampled($im,$imorig , 0,0,$kvad['x1'],$kvad['y1'],$wr,$hr,$kvad['width'],$kvad['height']))
         if (imagejpeg($im, $save_dir.$save_name))
             return true;
         else
