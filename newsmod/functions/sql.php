@@ -28,8 +28,9 @@ function mysqlQwery($query, $status=0) // $status == 0 - select
         while($row=mysql_fetch_assoc($result)){
             $arr[] = $row;
         };
+        mysql_close($link);
         return $arr;
     }
-    mysql_close($link);
+
 };
 

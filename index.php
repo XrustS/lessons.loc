@@ -71,14 +71,15 @@ if(isset($_FILES['pic'])){
     }
     $fname =time().".jpg";
     $tmpf = $_FILES['pic']['tmp_name'];
-    if(!img_resize($tmpf,200,150,'./thumsimg/',$fname)){
+    var_dump($_FILES);
+    /*if(!img_resize($tmpf,200,150,'./thumsimg/',$fname)){
         echo "Произошла ошибка img_resize</br>";
         var_dump($_FILES);
     }else {
 
     header('Location: index.php');
     exit();
-    }
+    }*/
 }
 // вывод галереи
 

@@ -1,0 +1,101 @@
+html{
+	font-family: 'PT Sans', sans-serif;
+	font-size: 1.1em;
+}
+header{
+	height: 150px;
+	border: 1px solid #c0c0c0;
+	border-radius: 10px;
+	padding: 30px;
+	background: url("../img/4.jpg")  #91c2d1;
+	
+}
+a{color:#fc9d7a;
+	text-decoration: none;
+	text-shadow: 1px 1px 1px #6f3f1d;
+} 
+a:hover{color:#f8baa3;}
+
+/*******************
+		Forms
+*******************/
+form {
+	 max-width: 960px;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background: #f4f7f8;
+  border-radius: 8px;
+}
+
+label{
+	display: block;
+}
+input[type="text"], textarea{
+	border: none;
+	width: 100%;
+	font-size: 1.3em;
+	background: tomato;
+	border-radius: 5px;
+	margin: 10px 0;
+}
+textarea{
+	min-height: 350px;
+}
+input[type="submit"],
+input[type="reset"],
+input[type="file"] {
+	border: 3px solid #f48672;
+	border-radius: 10px;
+	background: #ff4d2d;
+	color: black;
+	font-size: 14px;
+	font-weight: 600;
+	margin: 5px;
+	padding: 10px;
+}
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+	background: #f5684f;
+	border: 3px solid #ffb0a2;
+	
+}
+
+
+header>h1{	
+	border: 3px solid #505050;
+	color:#505050;
+	font-size: 2.5em;
+	padding: 5px;
+	width: 300px;
+	float: left;
+	margin: 0;
+}
+header>a{	
+	border: 3px solid #505050;
+	padding: 5px;
+	float: right;
+}
+.wrapper{
+	max-width: 960px;
+	min-width: 480px;
+	margin:auto;
+}
+
+.news{
+	margin: 10px 0;
+	border-bottom: 1px dashed #505050;
+	min-height: 155px;
+}
+.news>a{
+	font-size: 1.8em;
+	font-weight: 700;
+	text-decoration:none;
+}
+.img{
+	width: 200px;
+	height: 150px;
+	margin: 5px 15px 15px 0;	
+	background-color: blueviolet;
+	border:5px solid #c0c0c0;
+	float: left;
+}

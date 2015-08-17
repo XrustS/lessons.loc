@@ -5,7 +5,8 @@
  * Date: 12.08.2015
  * Time: 11:42
  */
-function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name, $maxisheight = 0 )
+require_once __DIR__."/../functions/sql.php";
+function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name )
 {
     function kvadrator ($ratio, $width_sour, $height_sour, $trim_percent){
 
@@ -69,7 +70,9 @@ function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name, $maxisheight = 0
             return false;
 }
 function print_form(){
-    ?><form action="#" method="post" enctype="multipart/form-data">
+    ?>
+    <section>
+     <form action="index.php" method="post" enctype="multipart/form-data">
         <h1>Добавление новости</h1>
         <label for="title">Введите заголовок новости:</label>
         <input type="text" name="title" id="title">
@@ -77,41 +80,80 @@ function print_form(){
         <textarea name="Text" id="Text"></textarea>
         <input type="submit" value="Добавить новость">
         <input type="reset" value="Очистить поля">
-        <input type="file" id="filepath" value="Загрузите файл">
-    </form>
+        <input type="file" id="filepath" name="Pic" value="Загрузите файл">
+     </form>
+    </section>
     <?php
 }
-function showNews(){
+function showNews($idNews){
     $sql = 'select * from news;';
     $row = mysqlQwery($sql);
-    foreach($row as $item){
-        ?>
-        <div class="news">
-    <?php if(empty($item['Pic'])){
-            echo '<div class="img"></div>';
-            } else {echo '<img src="./smallimg/'.$item['Pic'].'">'; }
-             ?>
-            <a href="#"> <?php echo $item['title']; ?></a>
-            <div class="textnews">
-                <p> <?php echo $item['Text']; ?></p>
-            </div>
-        </div>
-    <?php
-    }
+    if(count($row)){
+        if($row['id'] == $idNews){?>
+
+                <section>
+                    <div class="news">
+                        <?php if(empty($item['Pic'])){
+                            echo '<div class="img"></div>';
+                        } else {echo '<img class="img" src="./smallimg/'.$item['Pic'].'">'; }
+                        ?>
+                        <a href="#"> <?php echo $item['title']; ?></a>
+                        <div class="textnews">
+                            <p> <?php echo $item['Text']; ?></p>
+                        </div>
+                    </div>
+                </section>
+            <?php
+        }else {
+            echo "<section>";
+            foreach($row as $item){
+              ?>
+                  <div class="news">
+                      <?php if(empty($item['Pic'])){
+                            echo '<div class="img"></div>';
+                          } else {echo '<img class="img" src="./smallimg/'.$item['Pic'].'">'; }
+                        ?>
+                         <a href="index.php?action=viewnews&id=<?php echo $item['id']?>"> <?php echo $item['title']; ?></a>
+                        <div class="textnews">
+                            <p> <?php echo $item['Text']; ?></p>
+                        </div>
+                  </div>
+                 <?php
+            }
+        echo "</section>";}
+    } else echo "Новостей нет.";
+
 }
 function addNews($title, $text, $farr){
 
-            $fname =time().".jpg";
-            $tmpf = $_FILES['pic']['tmp_name'];
-            if(!img_resize($tmpf,200,150,'./thumsimg/',$fname)){
+    if ($title!=''&&$text!=''&&isset($farr)){
+        $filtrType = array('image/gif','image/jpeg','image/png');
+        if (in_array($farr['type'],$filtrType)) {
+            $fname = time() . ".jpg";
+            $tmpf = $farr['tmp_name'];
+            $dirSmall = './smallimg/';
+            $dirBig = './bigimg/';
+            if (!is_dir($dirSmall)) mkdir($dirSmall,0777);
+            if (!is_dir($dirBig)) mkdir($dirBig,0777);
+            copy($farr['tmp_name'],$dirBig.$fname);
+            if (!img_resize($tmpf, 200, 150, $dirSmall, $fname)) {
                 echo "Произошла ошибка img_resize</br>";
                 var_dump($_FILES);
-            }else {
+                $fname = null;
+                }
+        }
+        $sql = "INSERT INTO news ".
+               "(title, Text, Pic )".
+               "VALUES ('$title', '$text', '$fname')";
+        mysqlQwery($sql,1);
+    }
 
-                header('Location: index.php');
-                exit();
-            }
 }
-function delNews(){
-
+function delNews($idNews){
+    if(!empty($idNews)){
+        $sql = "DELETE FROM news".
+                "WHERE id='$idNews'";
+        mysqlQwery($sql,1);
+        return true;
+    }return false;
 }
