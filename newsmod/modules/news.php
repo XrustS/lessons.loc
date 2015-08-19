@@ -69,7 +69,7 @@ function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name )
         else
             return false;
 }
-function print_form(){
+function print_Addform(){
     ?>
     <section>
      <form action="index.php" method="post" enctype="multipart/form-data">
@@ -85,29 +85,47 @@ function print_form(){
     </section>
     <?php
 }
+function print_Delform($idNews){?>
+    <div id="modal">
+    <form  action="index.php" method="post" >
+        <p>Вы точно хотите удалить данную новость?</p>
+        <input type="hidden" name="idnews" value="<?php echo $idNews ?>">
+        <input type="hidden" name="choise" value="success">
+        <input type="submit" value="Удалить новость">
+        <a class="button Close">Отмена</a>
+    </form>
+</div>
+    <?php
+}
 function showNews($idNews){
     $sql = 'select * from news;';
     $row = mysqlQwery($sql);
     if(count($row)){
-        if($row['id'] == $idNews){?>
 
-                <section>
-                    <div class="news">
-                        <?php if(empty($item['Pic'])){
-                            echo '<div class="img"></div>';
-                        } else {echo '<img class="img" src="./smallimg/'.$item['Pic'].'">'; }
-                        ?>
-                        <a href="#"> <?php echo $item['title']; ?></a>
-                        <div class="textnews">
-                            <p> <?php echo $item['Text']; ?></p>
-                        </div>
-                    </div>
-                </section>
-            <?php
-        }else {
+
             echo "<section>";
             foreach($row as $item){
+                if($idNews != "All"){
+                    if($item['id'] === $idNews){
+                    ?>
+
+                    <section>
+                        <div class="news">
+                            <?php if(empty($item['Pic'])){
+                                echo '<div class="img"></div>';
+                            } else {echo '<a href="./bigimg/'.$item['Pic'].'"><img class="img" src="./smallimg/'.$item['Pic'].'"></a>'; }
+                            ?>
+                            <h2><?php echo $item['title']; ?></h2><a href="index.php?action=delnews&id=<?php echo $item['id'] ?>">Удалить новость</a>
+                            <div class="textnews">
+                                <p> <?php echo $item['Text']; ?></p>
+                            </div>
+                        </div>
+                        <a class="backuplink" href="index.php">Вернуться к списку новостей...</a>
+                    </section>
+                <?php }
+                } else {
               ?>
+
                   <div class="news">
                       <?php if(empty($item['Pic'])){
                             echo '<div class="img"></div>';
@@ -118,15 +136,17 @@ function showNews($idNews){
                             <p> <?php echo $item['Text']; ?></p>
                         </div>
                   </div>
-                 <?php
-            }
-        echo "</section>";}
+                 <?php };
+            echo "</section>";}
     } else echo "Новостей нет.";
 
 }
 function addNews($title, $text, $farr){
 
     if ($title!=''&&$text!=''&&isset($farr)){
+        $charlist ='\39\34\96' ;
+        $title = addcslashes($title,$charlist);
+        $text = addcslashes($title,$charlist);
         $filtrType = array('image/gif','image/jpeg','image/png');
         if (in_array($farr['type'],$filtrType)) {
             $fname = time() . ".jpg";
@@ -143,7 +163,7 @@ function addNews($title, $text, $farr){
                 }
         }
         $sql = "INSERT INTO news ".
-               "(title, Text, Pic )".
+               "(title, Text, Pic ) ".
                "VALUES ('$title', '$text', '$fname')";
         mysqlQwery($sql,1);
     }
@@ -151,9 +171,15 @@ function addNews($title, $text, $farr){
 }
 function delNews($idNews){
     if(!empty($idNews)){
-        $sql = "DELETE FROM news".
-                "WHERE id='$idNews'";
+        $sql = "SELECT Pic FROM news WHERE id='$idNews'";
+        $row = mysqlQwery($sql);
+        if(current($row)){
+            $filepic = $row[0]['Pic'];
+            if(file_exists("./bigimg/".$filepic)) unlink("./bigimg/".$filepic);
+            if(file_exists("./smallimg/".$filepic)) unlink("./smallimg/".$filepic);
+            $sql = "DELETE FROM news ".
+                   "WHERE id='$idNews'";
         mysqlQwery($sql,1);
-        return true;
+        return true;}
     }return false;
 }

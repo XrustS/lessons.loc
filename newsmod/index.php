@@ -1,7 +1,12 @@
 <?php
 require_once __DIR__."/./modules/news.php";
-if(isset($_POST)&& isset($_FILES)){
-    addNews($_POST['title'], $_POST['Text'], $_FILES['Pic']);
+if(isset($_POST)){
+    if(isset($_FILES)){
+       addNews(htmlspecialchars($_POST['title']),htmlspecialchars($_POST['Text']), $_FILES['Pic']);
+    }
+    if($_POST['choise']==="success"){
+        delNews($_POST['idnews']);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -21,12 +26,24 @@ if(isset($_POST)&& isset($_FILES)){
     </header>
 
         <?php
-       /*  if($_GET['action']=='addnews')   print_form();
-        elseif ($_GET['action']=='viewnews' && $_GET['id']!='') showNews($_GET['id']);
-            else */showNews('21');
+       if(isset($_GET))
+           switch($_GET['action']){
+               case "addnews":
+                   print_Addform(); break;
+               case "viewnews":
+                   if($_GET['id']!='') showNews($_GET['id']); break;
+               case "delnews":
+                   if(!empty($_GET['id'])) print_Delform($_GET['id']);break;
+               default:
+                   showNews("All");
+           }
+
 
         ?>
     </section>
 </div>
+
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="js/jquery.plainmodal.min.js"></script>
 </body>
 </html>
