@@ -75,14 +75,14 @@ function print_Addform(){
     ?>
     <section>
      <form action="index.php" method="post" enctype="multipart/form-data">
-        <h1>Добавление новости</h1>
-        <label for="title">Введите заголовок новости:</label>
+        <h1>���������� �������</h1>
+        <label for="title">������� ��������� �������:</label>
         <input type="text" name="title" id="title">
-        <label for="Text">Текст новости:</label>
+        <label for="Text">����� �������:</label>
         <textarea name="Text" id="Text"></textarea>
-        <input type="submit" value="Добавить новость">
-        <input type="reset" value="Очистить поля">
-        <input type="file" id="filepath" name="Pic" value="Загрузите файл">
+        <input type="submit" value="�������� �������">
+        <input type="reset" value="�������� ����">
+        <input type="file" id="filepath" name="Pic" value="��������� ����">
      </form>
     </section>
     <?php
@@ -90,11 +90,11 @@ function print_Addform(){
 function print_Delform($idNews){?>
     <div id="modal">
     <form  action="index.php" method="post" >
-        <p>Вы точно хотите удалить данную новость?</p>
+        <p>�� ����� ������ ������� ������ �������?</p>
         <input type="hidden" name="idnews" value="<?php echo $idNews ?>">
         <input type="hidden" name="choise" value="success">
-        <input type="submit" value="Удалить новость">
-        <a class="button Close">Отмена</a>
+        <input type="submit" value="������� �������">
+        <a class="button Close">������</a>
     </form>
 </div>
     <?php
@@ -117,18 +117,19 @@ function showNews($idNews){
                                 echo '<div class="img"></div>';
                             } else {echo '<a href="./bigimg/'.$item['Pic'].'"><img class="img" src="./smallimg/'.$item['Pic'].'"></a>'; }
                             ?>
-                            <h2><?php echo $item['title']; ?></h2><a href="index.php?action=delnews&id=<?php echo $item['id'] ?>">Удалить новость</a>
+                            <h2><?php echo $item['title']; ?></h2><a href="index.php?action=delnews&id=<?php echo $item['id'] ?>">������� �������</a>
                             <div class="textnews">
                                 <p> <?php echo $item['Text']; ?></p>
                             </div>
                         </div>
-                        <a class="backuplink" href="index.php">Вернуться к списку новостей...</a>
+                        <a class="backuplink" href="index.php">��������� � ������ ��������...</a>
                     </section>
                 <?php }
                 } else {
               ?>
+4
 
-                  <div class="news">
+                 <div class="news">
                       <?php if(empty($item['Pic'])){
                             echo '<div class="img"></div>';
                           } else {echo '<img class="img" src="./smallimg/'.$item['Pic'].'">'; }
@@ -140,7 +141,7 @@ function showNews($idNews){
                   </div>
                  <?php };
             echo "</section>";}
-    } else echo "Новостей нет.";
+    } else echo "�������� ���.";
 
 }
 function addNews($title, $text, $farr){
@@ -159,7 +160,7 @@ function addNews($title, $text, $farr){
             if (!is_dir($dirBig)) mkdir($dirBig,0777);
             copy($farr['tmp_name'],$dirBig.$fname);
             if (!img_resize($tmpf, 200, 150, $dirSmall, $fname)) {
-                echo "Произошла ошибка img_resize</br>";
+                echo "��������� ������ img_resize</br>";
                 var_dump($_FILES);
                 $fname = null;
                 }
