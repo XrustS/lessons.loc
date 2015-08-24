@@ -6,19 +6,19 @@ class DataBase {
     protected $passdb;
     protected $dbname;
 
-    function __construct($host, $userdb, $passdb, $dbname){
+    public function __construct($host, $userdb, $passdb, $dbname){
         $this->host = $host;
         $this->userdb = $userdb;
         $this->passdb = $passdb;
         $this->dbname = $dbname;
     }
-    function initDB(){
+    protected function initDB(){
        if(mysql_connect($this->host,$this->userdb,$this->passdb)) {
            if(mysql_select_db($this->dbname)) return true;
        }
         return false;
     }
-    function query($sql){
+    public function query($sql){
         if($this->initDB()){
            $result = mysql_query($sql);
            if($result === false) return false;
@@ -28,7 +28,7 @@ class DataBase {
             return $arr;
         }
     }
-    function execute($sql){
+    public function execute($sql){
         if($this->initDB()){
            $result = mysql_query($sql);
            if($result === false) return false;
