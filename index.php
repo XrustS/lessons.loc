@@ -1,11 +1,13 @@
 <?php
-/* Upload files*/
-define('CHARSET', 'UTF-8');
-echo ini_get("default_charset");
- if(isset($_POST)){
-     //echo ord($_POST['ord']);
-     echo htmlspecialchars($_POST['ord']);//'\39\34\96');
- }
+// Экронирование вводимой ниформацииша
+if(isset($_POST)){
+    $strout = $_POST['ord'];
+    define('REPLACE_FLAGS', ENT_QUOTES|ENT_SUBSTITUTE );
+    $fh = fopen('htmlout.txt',"a+");
+    $str = $strout."  ----  ".htmlspecialchars($strout,REPLACE_FLAGS,'UTF-8')."/n";
+    fwrite($fh,$str);
+    fclose($fh);
+}
 
 ?>
 <!doctype html>
@@ -20,6 +22,11 @@ echo ini_get("default_charset");
         <input type="submit" value="Upload">
 
     </form>
+    &quot;
+    <?php
+
+
+    ?>
 
 </body>
 </html>

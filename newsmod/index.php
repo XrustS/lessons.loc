@@ -1,8 +1,9 @@
 <?php
 require_once __DIR__."/./modules/news.php";
+
 if(isset($_POST)){
     if(isset($_FILES)){
-       addNews(htmlspecialchars($_POST['title']),htmlspecialchars($_POST['Text']), $_FILES['Pic']);
+       addNews(htmlspecialchars($_POST['title'],REPLACE_FLAGS,CHARSET),htmlspecialchars($_POST['Text'],REPLACE_FLAGS,CHARSET), $_FILES['Pic']);
     }
     if($_POST['choise']==="success"){
         delNews($_POST['idnews']);
@@ -33,7 +34,7 @@ if(isset($_POST)){
                case "viewnews":
                    if($_GET['id']!='') showNews($_GET['id']); break;
                case "delnews":
-                   if(!empty($_GET['id'])) print_Delform($_GET['id']);break;
+                   if(!empty($_GET['id'])) print_Delform($_GET['id']); showNews($_GET['id']); break;
                default:
                    showNews("All");
            }

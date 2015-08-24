@@ -6,6 +6,8 @@
  * Time: 11:42
  */
 require_once __DIR__."/../functions/sql.php";
+define('REPLACE_FLAGS', ENT_QUOTES|ENT_SUBSTITUTE );
+define('CHARSET','UTF-8');
 function img_resize( $tmpname, $wr, $hr, $save_dir, $save_name )
 {
     function kvadrator ($ratio, $width_sour, $height_sour, $trim_percent){
@@ -144,9 +146,9 @@ function showNews($idNews){
 function addNews($title, $text, $farr){
 
     if ($title!=''&&$text!=''&&isset($farr)){
-        $charlist ='\39\34\96' ;
-        $title = addcslashes($title,$charlist);
-        $text = addcslashes($title,$charlist);
+
+        $title = htmlspecialchars($title,REPLACE_FLAGS,CHARSET);
+        $text = htmlspecialchars($text,REPLACE_FLAGS,CHARSET);
         $filtrType = array('image/gif','image/jpeg','image/png');
         if (in_array($farr['type'],$filtrType)) {
             $fname = time() . ".jpg";
@@ -165,6 +167,7 @@ function addNews($title, $text, $farr){
         $sql = "INSERT INTO news ".
                "(title, Text, Pic ) ".
                "VALUES ('$title', '$text', '$fname')";
+        echo $sql;
         mysqlQwery($sql,1);
     }
 
@@ -175,8 +178,8 @@ function delNews($idNews){
         $row = mysqlQwery($sql);
         if(current($row)){
             $filepic = $row[0]['Pic'];
-            if(file_exists("./bigimg/".$filepic)) unlink("./bigimg/".$filepic);
-            if(file_exists("./smallimg/".$filepic)) unlink("./smallimg/".$filepic);
+            if(file_exists("./bigimg/".$filepic)&&(!$filepic)) unlink("./bigimg/".$filepic);
+            if(file_exists("./smallimg/".$filepic)&&(!$filepic)) unlink("./smallimg/".$filepic);
             $sql = "DELETE FROM news ".
                    "WHERE id='$idNews'";
         mysqlQwery($sql,1);
