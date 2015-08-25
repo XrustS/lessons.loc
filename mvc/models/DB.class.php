@@ -6,11 +6,13 @@ class DataBase {
     protected $passdb;
     protected $dbname;
 
-    public function __construct($host, $userdb, $passdb, $dbname){
-        $this->host = $host;
-        $this->userdb = $userdb;
-        $this->passdb = $passdb;
-        $this->dbname = $dbname;
+    public function __construct(){
+        $db = array();
+        require_once __DIR__."/../init/db.init.php";
+        $this->host = $db['hostdb'];
+        $this->userdb = $db['userdb'];
+        $this->passdb = $db['passdb'];
+        $this->dbname = $db['dbname'];
     }
     protected function initDB(){
        if(mysql_connect($this->host,$this->userdb,$this->passdb)) {
@@ -22,10 +24,7 @@ class DataBase {
         if($this->initDB()){
            $result = mysql_query($sql);
            if($result === false) return false;
-            while($row=mysql_fetch_assoc($result)){
-                $arr[] = $row;
-            }
-            return $arr;
+            return $result;
         }
     }
     public function execute($sql){
