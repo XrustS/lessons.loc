@@ -1,14 +1,15 @@
 <?php
 // Класс отвечающий за работу с базой данных;
-class DataBase {
+class DB {
     protected $host;
     protected $userdb;
     protected $passdb;
     protected $dbname;
+    protected $_result;
 
     public function __construct(){
-        $db = array();
-        require_once __DIR__."/../init/db.init.php";
+        $db = [];
+        include  __DIR__."/../init/db.init.php";
         $this->host = $db['hostdb'];
         $this->userdb = $db['userdb'];
         $this->passdb = $db['passdb'];
@@ -24,7 +25,9 @@ class DataBase {
         if($this->initDB()){
            $result = mysql_query($sql);
            if($result === false) return false;
-            return $result;
+            $this->_result = $result;
+            return $this;
+
         }
     }
     public function execute($sql){
@@ -34,4 +37,29 @@ class DataBase {
            return true;
         }
     }
+    function fetchArr(){
+        if(!empty($this->_result)){
+            $arrRes = [];
+           while($row = mysql_fetch_array($this->_result)){
+               $arrRes[] = $row;
+           } return $arrRes;
+        } return false;
+    }
+    function fetchObj($class){
+        if(!empty($this->_result)){
+            $arrRes = [];
+            while($row = mysql_fetch_object($this->_result,$class)){
+                $arrRes[] = $row;
+            } return $arrRes;
+        } return false;
+    }
+    function fetchAssoc(){
+        if(!empty($this->_result)){
+            $arrRes = [];
+            while($row = mysql_fetch_assoc($this->_result)){
+                $arrRes[] = $row;
+            } return $arrRes;
+        } return false;
+    }
+
 }

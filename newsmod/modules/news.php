@@ -160,8 +160,8 @@ function addNews($title, $text, $farr){
             if (!is_dir($dirBig)) mkdir($dirBig,0777);
             copy($farr['tmp_name'],$dirBig.$fname);
             if (!img_resize($tmpf, 200, 150, $dirSmall, $fname)) {
-                echo "��������� ������ img_resize</br>";
-                var_dump($_FILES);
+                echo "Возинкла ошибка в функции img_resize</br>";
+                var_dump($farr);
                 $fname = null;
                 }
         }

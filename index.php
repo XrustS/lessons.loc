@@ -7,6 +7,8 @@ if(isset($_POST)){
     $str = $strout."  ----  ".htmlspecialchars($strout,REPLACE_FLAGS,'UTF-8')."/n";
     fwrite($fh,$str);
     fclose($fh);
+
+
 }
 
 ?>
