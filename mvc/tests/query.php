@@ -5,10 +5,10 @@
 
 
 $db = new DB();
-/*assert(
+assert(
     [
-        [ 'id'=>'1', 'text'=>'Test1' ],
-        [ 'id'=>'2', 'text'=>'Test2' ],
-    ] ==*/
-    var_dump($db->query("SELECT * FROM test")->fetchObj(News));
+        0=>[ 'id'=>'1', 'text'=>'Test1' ],
+        1=>[ 'id'=>'2', 'text'=>'Test2' ],
+    ] ==
+    $db->query("SELECT * FROM test")->fetchAssoc());
 echo "TEST PASSED";

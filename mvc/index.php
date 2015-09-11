@@ -1,5 +1,5 @@
 <?php
 
-require_once __DIR__.'/models/News.class.php';
-$listnews = News::get_AllNews();
-include __DIR__.'/views/shownews.php';
+//ini_set('display_errors', 1);
+define('BASE_DIR',__DIR__);
+require_once BASE_DIR.'/init/bootstart.php';

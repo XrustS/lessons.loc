@@ -5,7 +5,7 @@ class DB {
     protected $userdb;
     protected $passdb;
     protected $dbname;
-    protected $_result;
+    protected $_result = false;
 
     public function __construct(){
         $db = [];
@@ -23,43 +23,97 @@ class DB {
     }
     public function query($sql){
         if($this->initDB()){
-           $result = mysql_query($sql);
-           if($result === false) return false;
+           try{
+               $result = mysql_query($sql);
+               throw new Exception($sql);
+
+           } catch(Exception $e){
+               $log = new Log('DB'.date("d-m-Y",time()).'.log');
+               $log->set_log("Ошибка выполнения запроса: ".$e->getMessage());
+           };
+             if($result === false){
+                 $this->_result = false;
+                 return $this;
+             }
             $this->_result = $result;
             return $this;
-
         }
     }
     public function execute($sql){
         if($this->initDB()){
-           $result = mysql_query($sql);
-           if($result === false) return false;
+            try{
+                $result = mysql_query($sql);
+                throw new Exception($sql);
+            } catch (Exception $e){
+                $log = new Log('DB'.date("d-m-Y",time()).'.log');
+                $log->set_log("Ошибка выполнения запроса: ".$e->getMessage());
+            };
+
+           if($result === false) {
+
+               return false;
+           }
            return true;
         }
     }
     function fetchArr(){
-        if(!empty($this->_result)){
+        if($this->_result !== false){
             $arrRes = [];
-           while($row = mysql_fetch_array($this->_result)){
-               $arrRes[] = $row;
-           } return $arrRes;
+            try{
+                while($row = mysql_fetch_array($this->_result)){
+                    $arrRes[] = $row;
+                }
+                throw new Exception("_result");
+            } catch (Exception $e){
+                $log = new Log('DB'.date("d-m-Y",time()).'.log');
+                $log->set_log("Ошибка вывода результата запроса fetchArray: ".$e->getMessage());
+            };
+            return $arrRes;
         } return false;
     }
     function fetchObj($class){
-        if(!empty($this->_result)){
+        if($this->_result !== false){
             $arrRes = [];
-            while($row = mysql_fetch_object($this->_result,$class)){
-                $arrRes[] = $row;
-            } return $arrRes;
+            try{
+
+                while($row = mysql_fetch_object($this->_result,$class)){
+                    $arrRes[] = $row;
+                }
+
+            } catch (Exception $e){
+                $log = new Log('DB'.date("d-m-Y",time()).'.log');
+                $log->set_log("Ошибка вывода результата запроса fetchObj class - ".$class.": ".$e->getMessage());
+            };
+            return $arrRes;
         } return false;
     }
     function fetchAssoc(){
-        if(!empty($this->_result)){
+        if($this->_result !== false){
             $arrRes = [];
-            while($row = mysql_fetch_assoc($this->_result)){
-                $arrRes[] = $row;
-            } return $arrRes;
+            try{
+                while($row = mysql_fetch_assoc($this->_result)){
+                            $arrRes[] = $row;
+                        }
+                throw new Exception('_result');
+            } catch (Exception $e){
+                $log = new Log('DB'.date("d-m-Y",time()).'.log');
+                $log->set_log("Ошибка вывода результата запроса fetchAssoc: ".$e->getMessage());
+            };
+            return $arrRes;
         } return false;
     }
+    function countRow(){
+        if($this->_result !== false){
+            try{
+                $count = count(mysql_fetch_array($this->_result));
+                throw new Exception('_result');
+            } catch (Exception $e){
+                $log = new Log('DB'.date("d-m-Y",time()).'.log');
+                $log->set_log("Ошибка подсчета количества строк в выборке: ".$e->getMessage());
+            }
+            return $count;
+        } return false;
+    }
+
 
 }

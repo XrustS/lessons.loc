@@ -3,11 +3,12 @@ html{
 	font-size: 1.1em;
 }
 header{
-	height: 150px;
+	margin-top: 10px;
+    height: 150px;
 	border: 1px solid #c0c0c0;
 	border-radius: 10px;
 	padding: 30px;
-	background: url("../../mvc/views/css/img/4.jpg")  #91c2d1;
+	background: url("./img/4.jpg")  #91c2d1;
 	
 }
 a{color:#fc9d7a;
