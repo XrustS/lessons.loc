@@ -13,16 +13,3 @@
         <h1>Новости</h1>
         <a href="index.php?action=addnews">Добавить новость</a>
     </header>
-    <?php
-    /******
-     * content
-     * ********/
-
-
-    ?>
-
-    <script src="./js/jquery-1.11.3.min.js"></script>
-    <script src="./js/jquery.plainmodal.min.js"></script>
-</body>
-</html>
-

@@ -1,24 +1,23 @@
-
-<section>
-    <?php
-        if(isset($listnews)):
-            foreach($listnews as $item): ?>
-        <div class="news">
-            <?php if(!empty($item->Pic)): ?>
-                    <a href="./upload/bigimg/<?php echo $item->Pic;?>">
-                        <img src="./upload/smallimg/<?php echo $item->Pic;?>">
-                    </a>
+    <section>
+        <?php
+        if(isset($data)):
+            foreach($data as $item): ?>
+                <div class="news">
+                    <?php if(!empty($item->Pic)): ?>
+                        <a href="http://lessons.loc/mvc/upload/bigimg/<?php echo $item->Pic;?>">
+                            <img class="img" src="http://lessons.loc//mvc/upload/smallimg/<?php echo $item->Pic;?>">
+                        </a>
                     <?php else: ?>
-                    <div class="img"></div>
+                        <div class="img"></div>
                     <?php endif; ?>
-            <h2><?php echo $item->title; ?></h2>
-            <p><?php echo $item->Text; ?></p>
-        </div>
-    <?php endforeach;
-        else: 
+                    <a href=""><?php echo $item->title; ?></a>
+                    <div class="textnews">
+                        <p><?php echo $item->Text; ?></p>
+                    </div>
+                </div>
+            <?php endforeach;
+        else:
             echo "Новостей нет.";
         endif;
-    ?>
-</section>
-
-
+        ?>
+    </section>
