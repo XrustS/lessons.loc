@@ -1,134 +1,123 @@
 'use strict';
+const fs = require('fs');
 
-/****
-*       
-*       классы Pokemon_v2/PokemonList_v2 
-*       с использованием объекта Map
-*
-****/
-
-function Pokemon_v2(name, skil) {
-    let pokemon = new Map();
-    pokemon.set(name, skil);
-    this.get = () =>{
-        return this.pokemon;
-    };
-    this.show = () => {
-        return pokemon.forEach( ( item, key ) =>{
-            console.log('Покемон - '+key+
-                        ' уровень - '+item );            
-        });
-    };    
-}
-function PokemonList_v2(...parm){
-    this.pList = new Map();
-    for (let i=0; i < parm.length; i+=2){
-        this.pList.set(parm[i],parm[i+1]);
-    }; 
-    this.show = () => {
-        this.pList.forEach( (value, key) => {
-           console.log(`Покемон ${key} Уровень ${value}`);            
-        });
-        console.log('Общее количество покемонов: '+this.pList.size);
-    };
-    this.add = (name, skil) => {
-        this.pList.set(name, skil);
-    };
-    this.delPokemon = (name) => {
-        if ( name === undefined){
-            return false;
-        };
-        return this.pList.delete(name);
-    };
-    this.max = () => {
-       
-           let maxSkil = {
-               name: '',
-               skil: 0
-           };
-           this.pList.forEach( (value, key) => {
-               if(value > maxSkil.skil){
-                   maxSkil.skil = value;
-                   maxSkil.name = key;
-               };
-           });
-           return maxSkil;     
-    };
-} 
-
-
-function Pokemon(name, skil) {
-    this.name = name;
-    this.skil = skil;
-    this.getpokemon = () => {
-        return { name: this.name,
-                skil: this.skil}
+class Pokemon{
+    constructor( name, skil ){
+        this.name = name;
+        this.skil = skil;
     }
-};
-function PokemonList(...poklist){
-    this.plist = poklist;
-    this.add = (pkname, pkskil) => {
-        this.plist.push( {'name': pkname, 'skil': pkskil} );        
-    };
-    this.showAllPk = () => {
-        this.plist.forEach( (item, i) =>{
-            console.log('Покемон: '+ item.name +
-                        ' уровень: '+ item.skil);             
+    show(){
+        return `Покемон: ${this.name} уровень: ${this.skil}`;
+    }
+}
+class PokemonList{
+    constructor( ...pokemons ){
+        this.plist = [];
+        pokemons.forEach( (item, i) =>{
+            if ( item instanceof Pokemon ){
+                this.plist.push(item);
+            }
         });
-        console.log('Всего покмонов: '+this.plist.length);
-    }    
-};
-
-let pokemon1 = new Pokemon('Бульбазавр', 10),
-    pokemon2 = new Pokemon('Ивизавр', 20),
-    pokemon3 = new Pokemon('Венузавр', 30),
-    pokemon4 = new Pokemon('Чармандер', 10),
-    pokemonlist1 = new PokemonList(pokemon1.getpokemon(), pokemon2.getpokemon(), pokemon3.getpokemon(), pokemon4.getpokemon());
-
-pokemonlist1.add('Сквиртл', 150);
 
 
-let lost = new PokemonList({name:'Пикачу', skil:'300'},
-                           {name:'Сэндслэш', skil:'12'},
-                           {name:'Райчу', skil:'33'},
-                           {name:'Зубат', skil:'23'}                          
-                          ),
-    found = new PokemonList({name:'Нидорина', skil:'4'},
-                            {name:'Мачоп', skil:'7'},
-                            {name:'Мачоук', skil:'50'},
-                            {name:'Алаказам', skil:'42'}
-                           );
-/****
-*       Выполнение задания с использованием 
-*       классов Pokemon_v2/PokemonList_v2
-*
-****/
-let pokemonX = new Pokemon_v2('Голдак', 50);
-//pokemonX.show();
+    }
+    add(name, skil){
+        this.plist.push( new Pokemon(name, skil))
+    }
+    show(){
+        if ( this.plist === undefined ){
+            return false;
+        }
+        this.plist.forEach( (item, i)=>{
+            console.log( '[%s] %s', i+1, item.show());
+        });
+        console.log('Общее количество покемонов в списке: %s', this.plist.length )
+    }
+    getPokemon(name){
+        let result = this.plist.filter( (item, i)=>{
+                                return name === item.name;
+                            });
+        if ( result.length !== 0 ){
+            this.plist = this.plist.filter((item, i)=>{
+                                return name !== item.name;
+                            });
+            return result;
+        }
+        return false;
+    }
+    setPokemon(pokObject){
+        if (pokObject[0].name !== undefined &&  pokObject[0].skil !== undefined){
+            this.add(pokObject[0].name, pokObject[0].skil);            
+            return true;
+        }
+        return false;
+    }
+    max(){
+        let max = Math.max.apply(null, this.plist.map( (item) =>{
+            return item.skil;
+        } ));
+        max = this.plist.filter( (item)=>{
+            return item.skil === max;
+        });
+        return max[0].name+' '+max[0].skil;
+        
+    }
+    valueOf(){
+        return this.max();
+    }
+    
+}
+    
 
-let lost_v2 = new PokemonList_v2('Пикачу', '300',
-                                 'Сэндслэш', '12',
-                                 'Райчу', '33',
-                                 'Зубат', '23'
-                                ),
-    found_v2 = new PokemonList_v2('Нидорина', 4,
-                                  'Мачоп', 7,
-                                  'Мачоук', '50',
-                                  'Алаказам', 42
-                                 );
-console.log('Список найденых покемонов: lost');
-lost_v2.show();
-console.log('Список найденых покемонов: found');
-found_v2.show();
-found_v2.add('Зубат', '23');
-lost_v2.delPokemon('Зубат');
-console.log('Список найденых покемонов: lost');
-lost_v2.show();
-console.log('Список найденых покемонов: found');
-found_v2.show();
-let greatPokemon = found_v2.max();
-console.log(`Самый мощный среди найденых ${greatPokemon.name} уровень ${greatPokemon.skil} `);
+function random(min, max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+// Выполнение кода
+let pok1 = new Pokemon('Бульбазавр','50'),
+    pok2 = new Pokemon('Ивизавр','3'),
+    namepok = ['Венузавр','Чармандер', 'Чармелеон', 'Чаризард', 'Сквиртл', 'Вартортл', 'Бластойз', 'Катерпи',
+               'Метапод', 'Батерфри', 'Видл', 'Какуна'];
+//console.log(pok1.show());
+let found = new PokemonList(pok1, 324),
+    lost = new PokemonList(pok2);
+console.log(found);
+// Генерируем список покемонов и заполняем списки
+namepok.forEach( (item, i) =>{
+    if ( i < (namepok.length / 2) ){
+        found.add(item, random( 2, 100 ));
+    } else { lost.add(item, random( 2, 100 ));};
+});
+
+
+found.show();
+lost.show();
+found.setPokemon(lost.getPokemon('Батерфри'));
+found.show();
+lost.show();
+console.log(found);
 
 
 
+
+
+/** Хотел распарсить файлик pokemons.txt но не смог вернуть список заначений :(
+
+
+function getPokList(file){
+
+    fs.readFileSync(file, 'utf-8', (err, content) => {
+                                if(err) throw err;        
+                                let re = /\/(\W+)\/\W+$/gm,
+                                    m;  ;
+                                while ((m = re.exec(content)) !== null){
+                                    if (m.index === re.lastIndex) {
+                                        re.lastIndex++;
+                                    };
+                                    list.push(m[1]); 
+                                };        
+    });    
+}
+*/
 
