@@ -5,25 +5,27 @@ const random = require('./random');
 class Pokemon{
     constructor( name, skil ){
         this.name = name;
-        this.skil = skil;
+        this.skil = +skil;
     }
     show(){
-        console.log( `Покемон: ${this.name} уровень: ${this.skil}`);
+        clog( `Покемон: ${this.name} уровень: ${this.skil}`);
     }
     valueOf(){
-        return this.skil;
+        return +this.skil;
     }
 }
 class PokemonList extends Array{
     constuctor(...param){
-        super.constructor( param.filter( (item) => {return item instanceof Pokemon }) );  // не могу понять, почему не работает проверка 
+        super.constructor( ...param.filter( (item) => {
+            return item instanceof Pokemon; 
+        }) ); 
     }    
     add(name, skil){        
         if (name instanceof  Pokemon){
             this.push(name);
-            console.log('Добавлен -----');
+            clog('Добавлен -----');
             name.show();
-            console.log('-------------');
+            clog('-------------');
             return true;
             }else if ( name !== undefined && skil !== undefined ){
              this.push( new Pokemon(name, skil));
@@ -35,28 +37,22 @@ class PokemonList extends Array{
             this.forEach( (item)=>{
                 item.show();
         });
-        console.log('Общее количество покемонов в списке: %s', this.length )
+        clog('Общее количество покемонов в списке: %s', this.length )
     }
-    getPokemon(name){
+    get(name){
         let index = this.findIndex( (item) =>{
                 return item.name === name });
         if (index !== -1){
-            console.log('Удален -----');
+            clog('Удален -----');
             this[index].show();
-            console.log('-------------');
+            clog('-------------');
             return this.splice(index,1)[0];
         } return false;       
     }    
     max(){
-       let max = Math.max.apply(null,this.map(
-                                (item) =>{
-                                    return +item.valueOf();
-                                }
-                            )),
-            index = this.findIndex( (item) => {
-                return item.skil === max;
-            });
-        return this[index];
+           return this.find( (item) => {
+                return item.skil === Math.max(...this);
+            });     
         
         
     }
@@ -66,14 +62,14 @@ class PokemonList extends Array{
 
 
 // Выполнение кода
-let pok1 = new Pokemon('Бульбазавр',50),
+let pok1 = new Pokemon('Бульбазавр','1000'),
     pok2 = new Pokemon('Ивизавр','3'),
     namepok = ['Венузавр','Чармандер', 'Чармелеон', 'Чаризард', 'Сквиртл', 'Вартортл', 'Бластойз', 'Катерпи',
                'Метапод', 'Батерфри', 'Видл', 'Какуна'];
 pok1.show();
 let found = new PokemonList(pok1),
     lost = new PokemonList(pok2);
-console.log(found);
+//clog(found);
 // Генерируем список покемонов и заполняем списки
 namepok.forEach( (item, i) =>{
     if ( i < (namepok.length / 2) ){
@@ -81,15 +77,20 @@ namepok.forEach( (item, i) =>{
     } else { lost.add(item, random( 2, 100 ));};
 });
 
-
+clog('***** Список found ******');
 found.show();
 lost.show();
-found.add(lost.getPokemon('Батерфри')); //Можно и пушить, но раз уж написал обработку то через add =)
+found.add(lost.get('Батерфри')); //Можно и пушить, но раз уж написал обработку то через add =)
 found.show();
 lost.show();
-console.log(found);
+clog(found);
 
-console.log(found.max());
+clog(found.max());
+
+
+function clog(...message) {
+    console.log(...message);
+}
 
 
 
