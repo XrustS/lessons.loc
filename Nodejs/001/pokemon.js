@@ -1,6 +1,6 @@
 'use strict';
-const fs = require('fs');
-const random = require('./random');
+
+const random = require('./Lib/random');
 
 class Pokemon{
     constructor( name, skil ){

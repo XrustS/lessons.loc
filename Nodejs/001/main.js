@@ -4,9 +4,10 @@
 *                                 ./Lib/PokemonListClass.js (содержит класс PokemonList)
 */
 'use strict';
-const random = require('./random');
-const Pokemon = require('./Lib/PokemonClass');   
-const PokemonList = require('./Lib/PokemonListClass');
+let path = './Lib/';
+const random = require(path+'random');
+const Pokemon = require(path+'PokemonClass');   
+const PokemonList = require(path+'PokemonListClass');
 
 let pok1 = new Pokemon('Бульбазавр','1000'),
     pok2 = new Pokemon('Ивизавр','3'),
