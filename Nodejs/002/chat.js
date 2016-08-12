@@ -21,10 +21,14 @@ class ChatApp extends EventEmitter {
 }
 
 function sendMessage(obj, message){                     // Функция запускающая триггер входящего объекта на событие 'message'
+
+    // refactor_check_method: Возможно, лучше проверять не цепочку наследования, а
+    // наличие метода `emit` у объекта `obj`
+    // например так: if (typeof obj.emit === 'function') { }
     if( obj instanceof EventEmitter ){
-    obj.emit('message', chatOnMessage(`${obj.title}:${message}`));
-    };
-};
+      obj.emit('message', chatOnMessage(`${obj.title}:${message}`));
+    }; // code_style: точка с запятой не нужна здесь
+}; // code_style: точка с запятой не нужна здесь
 
 
 let webinarChat =  new ChatApp('webinar');
