@@ -15,7 +15,7 @@ let vkChat =       new ChatApp('---------vk');
 let chatOnCloseWebinarChat = (message) => {  //функция отписывает webinarChat от события 'message'
     console.log(message);
     webinarChat.removeListener('message', chatOnMessage);    
-}
+};
 
 vkChat.setMaxListeners(2);
 
