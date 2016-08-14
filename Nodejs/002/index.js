@@ -12,6 +12,10 @@ function sendOnMessage(obj, message) {
 let webinarChat =  new ChatApp('webinar');
 let facebookChat = new ChatApp('=========facebook');
 let vkChat =       new ChatApp('---------vk');
+let chatOnCloseWebinarChat = (message) => {  //функция отписывает webinarChat от события 'message'
+    console.log(message);
+    webinarChat.removeListener('message', chatOnMessage);    
+}
 
 vkChat.setMaxListeners(2);
 
@@ -20,10 +24,7 @@ facebookChat.on('message', chatOnMessage);
 vkChat.on('message', chatOnMessage);
 vkChat.on('close', chatOnMessage);          //подписка и обработчик метода close
 webinarChat.on('close',  chatOnMessage);
-webinarChat.on('chatOnClose', (message) => {  // событие 'chatOnClose', отписывает webinarChat от события 'message'
-    console.log(message);
-    webinarChat.removeListener('message', chatOnMessage);    
-});
+webinarChat.on('chatOnClose', chatOnCloseWebinarChat); 
 
 // Закрыть вконтакте
 setTimeout( ()=> {                                           
