@@ -1,65 +1,56 @@
-// code_style: EventEmitter не используется в коде
-// если модуль не используется, лучше удалить его подключение
-const EventEmitter = require('events');
-
-// code_style: mesFunc — неочевидное название переменной
-// Хорошее видео, как называть переменные https://www.youtube.com/watch?v=z5WkDQVeYU4
-const mesFunc = require('./messageFuncLib');
-
-// Предлагаю обработчики событий перенести в файл, где они используются
-// (`index.js`), так будет легче читать программу.
-// Обрабтчики событий редко используются совместно разными модулями.
-
+// Хорошее видео, как называть переменные https://www.youtube.com/watch?v=z5WkDQVeYU4  - видео просмотрел, изменил взгляды на жизнь :)
+const chatOnMessage = require('./chatOnMessage');
 const ChatApp = require('./ChatAppClass');
+
+function sendOnMessage(obj, message) { 
+
+    if( typeof obj.emit === 'function' ){
+        obj.emit('message', console.log(`${obj.title}:${message}`));
+    } 
+};
 
 let webinarChat =  new ChatApp('webinar');
 let facebookChat = new ChatApp('=========facebook');
 let vkChat =       new ChatApp('---------vk');
 
-
 vkChat.setMaxListeners(2);
 
-webinarChat.on('message', mesFunc.chatOnMessage);
-facebookChat.on('message', mesFunc.chatOnMessage);
-
-vkChat.on('message', mesFunc.chatOnMessage);
-
-// refactor_handlers: возможно, тут стоит сделать отдельный обработчик,
-// `chatOnClose` например
-vkChat.on('close', mesFunc.chatOnMessage);          //подписка и обработчик метода close
-
-webinarChat.on('close',  mesFunc.chatOnMessage );
-
-// code_style: Код, который не используется в программе лучше удалять совсем
-// островки "мертвого" когда затрудняют чтение
+webinarChat.on('message', chatOnMessage);
+facebookChat.on('message', chatOnMessage);
+vkChat.on('message', chatOnMessage);
+vkChat.on('close', chatOnMessage);          //подписка и обработчик метода close
+webinarChat.on('close',  chatOnMessage);
+webinarChat.on('chatOnClose', (message) => {  // событие 'chatOnClose', отписывает webinarChat от события 'message'
+    console.log(message);
+    webinarChat.removeListener('message', chatOnMessage);    
+});
 
 // Закрыть вконтакте
-/*setTimeout( ()=> {                                            Раз метод  vkChat.close() срабатывает через 6 сек, данный код не нужен
-  console.log('Закрываю вконтакте...');
-  vkChat.removeListener('message', mesFunc.chatOnMessage);
+setTimeout( ()=> {                                           
+    console.log('Закрываю вконтакте...');
+    vkChat.removeListener('message', chatOnMessage);
 }, 10000 );
-*/
+
 
 // Закрыть фейсбук
 setTimeout( ()=> {
-  console.log('Закрываю фейсбук, все внимание — вебинару!');
-  facebookChat.removeListener('message', mesFunc.chatOnMessage);
+    console.log('Закрываю фейсбук, все внимание — вебинару!');
+    facebookChat.removeListener('message', chatOnMessage);
 }, 15000 );
 
-// code_style: отступы и выравнивание в коде сделаны по-разному (начало)
 setTimeout( ()=> {    
-        mesFunc.sendMessage(webinarChat, ' Готовлюсь к ответу!');                            
+    sendOnMessage(webinarChat, ' Готовлюсь к ответу!');                            
 }, 2000 );
 
-setTimeout( () =>{ 
-    mesFunc.sendMessage(vkChat, ' Готовлюсь к ответу!');
-                 }, 5000 );
+setTimeout( () => { 
+    sendOnMessage(vkChat, ' Готовлюсь к ответу!');
+}, 5000 );
 
-setTimeout( () => {         //Отработка метода close() у vkChat черз 6 сек
+setTimeout( () => {         //Отработка метода close() у vkChat черз 11 сек
     vkChat.close();
-}, 6000);
+}, 11000);
 
-setTimeout( () => {        //Отработка метода close() у webinarChat черз 30 сек
-    webinarChat.close();
+setTimeout( () => {        //webinarChat черз 30 сек выбрасывается событие 'chatOnClose'
+    console.log('Закрываю вебинар...');
+    webinarChat.emit('chatOnClose', 'Вебинар закрылся');
 }, 30000);
-// code_style: отступы и выравнивание в коде сделаны по-разному (конец)

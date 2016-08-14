@@ -24,8 +24,8 @@ function sendMessage(obj, message){                     // Функция зап
 
     // refactor_check_method: Возможно, лучше проверять не цепочку наследования, а
     // наличие метода `emit` у объекта `obj`
-    // например так: if (typeof obj.emit === 'function') { }
-    if( obj instanceof EventEmitter ){
+    // например так: if (typeof obj.emit === 'function') { }+
+    if( typeof obj.emit === 'function' ){
       obj.emit('message', chatOnMessage(`${obj.title}:${message}`));
     }; // code_style: точка с запятой не нужна здесь
 }; // code_style: точка с запятой не нужна здесь
