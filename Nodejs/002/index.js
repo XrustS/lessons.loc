@@ -1,20 +1,35 @@
-// Хорошее видео, как называть переменные https://www.youtube.com/watch?v=z5WkDQVeYU4  - видео просмотрел, изменил взгляды на жизнь :)
+// Хорошее видео, как называть переменные https://www.youtube.com/watch?v=z5WkDQVeYU4  -
+// видео просмотрел, изменил взгляды на жизнь :)
 const chatOnMessage = require('./chatOnMessage');
 const ChatApp = require('./ChatAppClass');
 
-function sendOnMessage(obj, message) { 
+/**
+ * Вызывает событие `message` на объекте `obj`
+ *
+ * @param {Object} obj Объект
+ * @param {Function} obj.emit Метод для подписки `obj` на событие
+ * @param {String} obj.title
+ * @param message
+ */
+function sendOnMessage(obj, message) {
 
-    if( typeof obj.emit === 'function' ){
-        obj.emit('message', console.log(`${obj.title}:${message}`));
-    } 
-};
+    if (typeof obj.emit === 'function') {
+        obj.emit('message', console.log(`${obj.title}: ${message}`));
+    }
+}
 
-let webinarChat =  new ChatApp('webinar');
+let webinarChat = new ChatApp('webinar');
 let facebookChat = new ChatApp('=========facebook');
-let vkChat =       new ChatApp('---------vk');
-let chatOnCloseWebinarChat = (message) => {  //функция отписывает webinarChat от события 'message'
+let vkChat = new ChatApp('---------vk');
+
+/**
+ * Отписывает webinarChat от события 'message'
+ *
+ * @param {String} message
+ */
+let chatOnCloseWebinarChat = (message) => {
     console.log(message);
-    webinarChat.removeListener('message', chatOnMessage);    
+    webinarChat.removeListener('message', chatOnMessage);
 };
 
 vkChat.setMaxListeners(2);
@@ -22,36 +37,38 @@ vkChat.setMaxListeners(2);
 webinarChat.on('message', chatOnMessage);
 facebookChat.on('message', chatOnMessage);
 vkChat.on('message', chatOnMessage);
-vkChat.on('close', chatOnMessage);          //подписка и обработчик метода close
-webinarChat.on('close',  chatOnMessage);
-webinarChat.on('chatOnClose', chatOnCloseWebinarChat); 
+
+vkChat.on('close', chatOnMessage);
+webinarChat.on('close', chatOnMessage);
+
+webinarChat.on('chatOnClose', chatOnCloseWebinarChat);
 
 // Закрыть вконтакте
-setTimeout( ()=> {                                           
+setTimeout(()=> {
     console.log('Закрываю вконтакте...');
     vkChat.removeListener('message', chatOnMessage);
-}, 10000 );
+}, 10000);
 
 
 // Закрыть фейсбук
-setTimeout( ()=> {
+setTimeout(()=> {
     console.log('Закрываю фейсбук, все внимание — вебинару!');
     facebookChat.removeListener('message', chatOnMessage);
-}, 15000 );
+}, 15000);
 
-setTimeout( ()=> {    
-    sendOnMessage(webinarChat, ' Готовлюсь к ответу!');                            
-}, 2000 );
+setTimeout(()=> {
+    sendOnMessage(webinarChat, ' Готовлюсь к ответу!');
+}, 2000);
 
-setTimeout( () => { 
+setTimeout(() => {
     sendOnMessage(vkChat, ' Готовлюсь к ответу!');
-}, 5000 );
+}, 5000);
 
-setTimeout( () => {         //Отработка метода close() у vkChat черз 11 сек
+setTimeout(() => {
     vkChat.close();
 }, 11000);
 
-setTimeout( () => {        //webinarChat черз 30 сек выбрасывается событие 'chatOnClose'
+setTimeout(() => {
     console.log('Закрываю вебинар...');
     webinarChat.emit('chatOnClose', 'Вебинар закрылся');
 }, 30000);
