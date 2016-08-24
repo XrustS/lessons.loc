@@ -14,21 +14,21 @@ module.exports = class PokemonList extends Array{
             name.show();
             console.log('-------------');
             return true;
-            }else if ( name !== undefined && skil !== undefined ){
-             this.push( new Pokemon(name, skil));
-                return true;
+        }else if ( name !== undefined && skil !== undefined ){
+            this.push( new Pokemon(name, skil));
+            return true;
         }        
         return false;
     }
     show(){
-            this.forEach( (item)=>{
-                item.show();
+        this.forEach( (item)=>{
+            item.show();
         });
         console.log('Общее количество покемонов в списке: %s', this.length )
     }
     get(name){                                                  // Надеюсь по пункту №5 я уложился?!))
         let index = this.findIndex( (item) =>{
-                return item.name === name });
+            return item.name === name });
         if (index !== -1){
             console.log('Удален -----');
             this[index].show();
@@ -37,12 +37,7 @@ module.exports = class PokemonList extends Array{
         } return false;       
     }    
     max(){
-            let max = Math.max(...this);
-           return this.find( (item) => {
-                return item.skil === max;
-            });     
-        
-        
+        let max = Math.max(...this);
+        return this.find( (item) => item.skil === max);          
     }
-    
 } 
