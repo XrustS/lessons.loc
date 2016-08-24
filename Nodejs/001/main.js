@@ -25,9 +25,15 @@ namepok.forEach( (item, i) =>{
 
 console.log('***** Список found ******');
 found.show();
+console.log('***** Список lost ******');
 lost.show();
+console.log('***** Перемещение покемона \'Батерфри\' из списка lost в список found ******');
 found.add(lost.get('Батерфри')); 
+console.log('***** Список found ******');
 found.show();
+console.log('***** Список lost ******');
 lost.show();
-console.log(found);
+console.log('***** Покемон с максимальным уровнем в списке found ******');
 console.log(found.max());
+console.log('***** Покемон с максимальным уровнем в списке lost ******');
+console.log(lost.max()); 
