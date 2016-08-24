@@ -37,8 +37,9 @@ module.exports = class PokemonList extends Array{
         } return false;       
     }    
     max(){
+            let max = Math.max(...this);
            return this.find( (item) => {
-                return item.skil === Math.max(...this);
+                return item.skil === max;
             });     
         
         
