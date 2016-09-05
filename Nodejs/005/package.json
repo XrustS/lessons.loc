@@ -1,0 +1,16 @@
+{
+  "name": "route-express",
+  "version": "1.0.0",
+  "description": "Home work in express",
+  "main": "route.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "xrumka",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "multer": "^1.2.0"
+  }
+}
