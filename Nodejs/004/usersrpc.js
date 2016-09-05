@@ -29,45 +29,25 @@ module.exports = class Users {
             })
         })
     }
-    /*update(req, resp, idUser, odjUser){
-        let user = {},
-            iduser = idUser !== undefined ? iduser : this.parseUrl(req);
-
-        if(odjUser === undefined){
-            if(req.body.name) user.name = req.body.name;
-            if(req.body.score) user.score = req.body.score;
-        } else { user = odjUser };
-
-        if(!Object.keys(user).length)
-            return resp.status(400).json({ error: `Bad request. Don\`t send parametrs` });    
-
-        this.db.update({ _id: +iduser },  user, {}, (err, numUpdate) => {
-            if(!numUpdate)
-                return resp.status(400).json({ error: `user ${iduser} not Found` });
-            resp.json({ success: `user ${iduser} updating` });
+    update(data, db, callback){
+        let objUser = data;
+        
+        if(objUser._id === undefined)
+            return callback('Bad request!');
+        
+        db.update({ _id: +objUser._id},  objUser, {}, (err, numUpdate) => {
+            if(err)
+                return callback(err);
+            callback(null, { success: `user ${numUpdate} updating`});
         });   
     }
-    delete(req, resp, idUser){
-        let userId = idUser !== undefined ? idUser : this.parseUrl(req);;
-
-        this.db.remove({ _id: +userId }, {}, (err, numRemoved) => {
+    delete(idUser, db, callback){
+        if(idUser._id === undefined)
+            return callback(new Error('Bad request!'));
+        db.remove({ _id: +idUser._id }, {}, (err, numRemoved) => {
             if(!numRemoved)
-                return resp.json({ error: `user ${userId} not Found` });
-            resp.json({ success: `user ${userId} delete` }); 
+                return callback(`user ${idUser._id} not Found` );
+           callback(null, { success: `user ${idUser._id} delete` }); 
         })
-    }*/
-    _getLastIndex(db){
-        return new Promise ((resolve, reject) => {
-            this.db.find({}).sort({ _id: -1 }).limit(1).exec( (err, docs) =>{
-                if(err)
-                    return reject(err);            
-
-                resolve((docs.length === 0) ? 0: Number(docs[0]._id));            
-            })
-
-        })
-    }
-    parseUrl(req){
-        return req.path.split('/')[1]
     }
 }
