@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const Datastore = require('nedb');
-const Users = require('./users');
+const Users = require('./usersrpc');
 
 const app = express();
 var upload = multer();
@@ -34,36 +34,109 @@ let routeAPIRast = express.Router(),
 // Обработка RAST роутов 
 
 // Роут для отображения всех пользователй
-routeAPIRast.get('/', (req, resp) => {
-    users.show(req, resp);
-});
-// Роут для отображения конкретного пользователя по id
-routeAPIRast.get(/\d+/, (req, resp) => {
-    let id = req.path.split('/')[1];
+routeAPIRast.get(/\/|\d+/,  (req, resp) => {
 
-    users.show(req, resp, id);      
+    let data = {},
+        id = +req.path.split('/')[1];
+
+    if (id) 
+        data._id = id;
+
+    users.show(data, db, (err, res) => {
+        if(err)
+            return resp.status(500).send(err.message);
+        resp.json(res);
+    })      
 });
 // Создание нового пользователя
 routeAPIRast.post('/', upload.array(), (req, resp) => {
-    users.insert(req, resp);  
+    let data = req.body;
+    console.log(data)        ;
+    if (!Object.keys(data).length) 
+        return resp.status(401).json({error: 'Bad request!'});
+
+    users.insert(data, db, (err, res) => {
+        if(err)
+            return resp.status(500).json({error: err.message});
+        resp.json(res);
+    })
 });
 // Роут для обновления данных пользователя 
 routeAPIRast.put(/\d+/, upload.array(), (req, resp) => {
-    users.update(req, resp);    
+    let id = +req.path.split('/')[1],
+        data = req.body;
+
+    if(!id || !Object.keys(data).length) 
+        return resp.status(401).json({error: 'Bad request!'});
+    data._id = id;
+
+    users.update(data, db, (err, res) => {
+        if(err)
+            return resp.status(500).json({error: err.message});
+        resp.json(res);
+    })     
 });
 // Роут для удаления пользователя по id
 routeAPIRast.delete(/\d+/, (req, resp) => {
-    users.delete(req, resp);
+    let id = +req.path.split('/')[1];
+
+    if(!id)
+        return resp.status(401).json({error: 'Bad request!'});    
+    users.delete(id, db, (err, res) => {
+        if(err)
+            return resp.status(500).json({error: err.message});
+        resp.json(res);
+    })
 });
 
 // --------------  RPC
 
-routeAPIRPC.post('/', (req, resp) => {
-   const method = RPC[req.body.method];
-    
-    method(req.body.params, (err, result) => {
-        resp.json(result);
-    })
+routeAPIRPC.post('/', function(req, res) {
+    res.header('Content-Type', 'application/json');
+    const method = users[req.body.method];
+    const data = req.body;
+
+    if (!err && data.jsonrpc !== '2.0') {
+        onError({
+            code: -32600,
+            message: 'Bad Request. JSON RPC version is invalid or missing',
+            data: null
+        }, 400);
+        return;
+    }
+    if (!err && !(rpcMethod = rpcMethods[data.method])) {
+        onError({
+            code: -32601,
+            message: 'Method not found : ' + data.method
+        }, 404);
+        return;
+    }
+
+    method(data.params, db, (err, result) => {
+        if(err)
+            return onError({
+                code: -32603,
+                message: 'Failed',
+                data: err
+            }, 500);
+
+        res.send(JSON.stringify({
+            jsonrpc: '2.0',
+            result: result,
+            error : null,
+            id: data.id
+        }), 200);
+
+
+    });
+
+    function onError(err, statusCode) {
+        res.send(JSON.stringify({
+            jsonrpc: '2.0',
+            error: err,
+            id: data.id
+        }), statusCode);
+    }
 });
 
 
@@ -73,9 +146,10 @@ app.use('/rpc', routeAPIRPC);
 
 // Обработчик ошибок 500
 app.use((err, req, resp, next) => {
-    colsole.error(err);
-    resp.status(500).send('Something went wrong');    
+    //colsole.error(err);
+    resp.status(500).send({error: 'Something went wrong'});    
 });
 
 app.listen(port);
 console.log('Start application on port %d', port);
+

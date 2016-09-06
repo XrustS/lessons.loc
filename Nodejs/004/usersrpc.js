@@ -35,19 +35,20 @@ module.exports = class Users {
         if(objUser._id === undefined)
             return callback('Bad request!');
         
-        db.update({ _id: +objUser._id},  objUser, {}, (err, numUpdate) => {
+        db.update({ _id: +objUser._id}, { $set: objUser }, {}, (err, numUpdate) => {
             if(err)
                 return callback(err);
             callback(null, { success: `user ${numUpdate} updating`});
         });   
     }
     delete(idUser, db, callback){
-        if(idUser._id === undefined)
+        if(idUser === undefined)
             return callback(new Error('Bad request!'));
-        db.remove({ _id: +idUser._id }, {}, (err, numRemoved) => {
+        
+        db.remove({ _id: idUser }, {}, (err, numRemoved) => {
             if(!numRemoved)
-                return callback(`user ${idUser._id} not Found` );
-           callback(null, { success: `user ${idUser._id} delete` }); 
+                return callback(`user ${idUser} not Found` );
+           callback(null, { success: `user ${idUser} delete` }); 
         })
     }
 }
