@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Чат</title>        
+
+
+    </head>
+    <body>
+        <div class="chat_box">
+            <div class="messagebox">
+                <div id="message"></div>
+            </div>
+
+            <input id="textmessage" autocomplete="off" /><button>Отправить сообщение</button>
+
+        </div>
+        
+        <script   src="http://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+        <script src="socket.io/socket.io.js"></script>
+        <script>
+            $(() => {
+                console.log('Document is ready!');
+
+                let socket = io();
+                
+                socket.on('connect', () => {
+                   socket.emit('newuser', prompt('Ваше имя в чате', 'Введите свой ник' ) ) 
+                });
+                
+                $('button').click( () => {
+                    socket.emit('sendMessage', $('#textmessage').val());
+                    $('#textmessage').val('');
+                    return false;
+                });
+                socket.on('sendMessage', (msg) => {
+                    $('#message').append($('<p>').text(msg));
+                });
+            });    
+        </script>
+
+    </body>
+</html>
