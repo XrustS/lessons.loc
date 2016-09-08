@@ -2,14 +2,30 @@
 <html lang="ru">
     <head>
         <meta charset="UTF-8">
-        <title>Чат</title>        
-
-
+        <title>Чат</title>
+        <style type='text/css'>
+            input[type="radio"] {
+                display: block;
+            }
+        </style>
     </head>
     <body>
         <div class="chat_box">
             <div class="messagebox">
                 <div id="message"></div>
+            </div>
+            
+            <div class="rooms">
+              <form action="">
+               <label for="cars">Чат любителей авто:</label>
+                <input type="radio" id="cars" name="Group1" value="cars" checked>
+                <label for="dogs&cats">Чат мои домашние животные:</label>
+                <input type="radio" id="dogs&cats" name="Group1" value="dogs&cats">
+                <label for="geeks">Чат как тяжело жить когда ты не похож на всех:</label>
+                <input type="radio" id="geeks" name="Group1" value="geeks">                
+                
+             </form>  
+                
             </div>
 
             <input id="textmessage" autocomplete="off" /><button>Отправить сообщение</button>
@@ -27,6 +43,13 @@
                 socket.on('connect', () => {
                    socket.emit('newuser', prompt('Ваше имя в чате', 'Введите свой ник' ) ) 
                 });
+                
+                let onChecked = () => {
+                    console.log($('input:checked').val());
+                    socket.emit('change room', $('input:checked').val());
+                };
+                
+                $('input[type="radio"]').on('click', onChecked);
                 
                 $('button').click( () => {
                     socket.emit('sendMessage', $('#textmessage').val());
