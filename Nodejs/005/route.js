@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const app = express();
-let upload = multer();
+const upload = multer();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,17 +22,17 @@ const middleware = (req, resp, next) => {
 };
 
 app.get('/', (req, resp) => {
-    resp.status(200).send('Hello Express.js');
+    resp.send('Hello Express.js');
 });
 app.get('/hello', (req, resp) => {
-    resp.status(200).send('Hello stranger !');
+    resp.send('Hello stranger !');
 });
 app.get('/hello/*/', (req, resp) => {
     console.log(req.params);
-    resp.status(200).send(`Hello ${req.params['0']}`);
+    resp.send(`Hello ${req.params['0']}`);
 });
 app.all(/sub\/.*?/, (req, resp) => {
-    resp.status(200).send(`You requested URI: ${req.originalUrl}`);
+    resp.send(`You requested URI: ${req.originalUrl}`);
 });
 app.post('/post', middleware,  (req, resp) => {
     if(Object.keys(req.body).length === 0)
