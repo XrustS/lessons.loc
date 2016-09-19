@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <title>Телефонная книга</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="box">
+            <h1>Телефонная книга</h1>
+            <div class="addform">
+                <form action="">
+                    <label for="name">ФИО:</label>
+                    <input id="name" type="text">
+                    <label for="phone">Номер телефона:</label>
+                    <input id="phone" type="text"><a href="#" class="addphone">+</a>
+                </form>
+                <button id="adduser">Добавить нового пользователя</button>
+            </div>
+            <input id="search" name="search"><button name="search">Поиск</button>
+            <ul id="PhoneBox">                
+            </ul>
+        </div>
+
+        <script   src="http://code.jquery.com/jquery-1.12.4.min.js"   integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="   crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(() => {
+                var index = 1;
+
+                $.ajax({
+                    url: '/getAllData',
+                    dataType: 'json',
+                    method: 'GET',
+                    success: getResult
+                });
+
+                // Событие добавление нового пользователя
+
+                $('#adduser').click( () => {
+                    let data = sendData();
+
+                    $.ajax({
+                        url: '/add',
+                        dataType:'json',
+                        method: 'POST',
+                        data: data,
+                        success: getResult
+                    }); 
+                });
+
+                //Создание нового текстового поля под дополнительный номер телефона
+
+                $('.addphone').click( () => {           
+                    console.log('Click is work');            
+                    $('form').append('<input id=\"phone'+index+'\" type=\"text\">');
+                    index++;
+                });
+                // Функция для вывода  данных полученных от сервера
+                function getResult(data){
+                    let out = '';
+                    if(Array.isArray(data)){
+                        data.forEach((doc) => {
+                            out += `<li> ${doc.name} <ul class=\"phonein\"> `;
+                            doc.phone.forEach((item) => {
+                                out += `<li> ${item} </li>`;
+                            });
+                            out += '</ul></li>';
+                        })
+                    } else {
+                        out += `<li> ${data.name} <ul class=\"phonein\"> `;
+                            data.phone.forEach((item) => {
+                                out += `<li> ${item} </li>`;
+                            });
+                    }
+                    out += '</ul></li>';                    
+                    $('#PhoneBox').append(out);
+                };
+                // Функция для подготовки и отправки данных на сервер
+                function sendData(){
+                    let data = {};
+
+                    data.name = $('#name').val();
+                    $('#name').val('');
+                    data.phone = $('#phone').val();
+                    $('#phone').val('');
+
+                    if(index !== 1){                        
+                        for(let i=1; i < index; i++){
+                            data['phone'+i] = $('#phone'+i).val();                      
+                        }
+                    };
+                    return data;
+                };
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,82 @@
+html {
+    margin: 0;
+    padding: 0;
+    background: #474646;
+    color: #FC753B;
+    font-family: 'Arial', sans-serif;
+    font-size: 17px;
+}
+a{
+    text-decoration: none;
+    color:inherit;
+}
+h1{
+    text-align: center;
+}
+label{
+    display: block;
+    margin: 10px 0;
+    font-weight: 500;
+}
+input{
+    font-size: 1.3rem;
+    width: 380px;
+    background:#695D58;
+    border: 1px solid #96847c;
+    border-radius: 5px;
+    margin-right: 20px;
+    margin-top: 10px;
+    color: bisque;
+}
+button{
+    background: #8d7f79;
+    color: #ccc;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    font-size: 1.1rem;
+    margin: 20px 0;
+    text-align: center;
+    height: 32px;
+}
+ul{
+    padding: 0;
+    margin: 10px 20px;
+}
+li{
+    padding: 5px;
+    text-decoration: none;
+    display: block;    
+}
+ul>li:nth-child(odd), li>ul>li:nth-child(even){
+    background: #947060;
+}
+ul>li:nth-child(even), li>ul>li:nth-child(odd){
+    background: #4C4A49;
+}
+a.addphone{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border:1px solid tomato; 
+}
+div.box{
+    max-width: 500px;
+    margin: 20px auto;
+}
+div.addform{
+    padding: 20px; 
+}
+input#search{
+    margin-top: 20px;
+    width: 380px;
+    margin-left: 20px;
+    margin-right: 5px;
+}
+
+
+/*
+Debug
+*/
+div{
+    border: 2px solid tomato;
+}
