@@ -15,25 +15,36 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/', (req, resp) => {
     resp.sendFile(path+'index.html');
 });
-
-app.get('/getAllData', (req, resp) => {
-    let buff = [];
-    mClient.find({})
-        .toArray()
-        .then( res => console.log(res)); 
-    resp.json({});
-    
-});
-
 app.get(/\.css/, (req, resp) => {
     resp.sendFile(path+'styles.css');
+});
+app.get(/\.js/, (req, resp) => {
+    resp.sendFile(path+'sitescript.js');
+});
+
+app.get('/getAllData', (req, resp) => {
+
+    mClient.find({}, res =>res.toArray()
+                 .then(response => resp.json(response)));
+});
+app.post('/search', upload.array(), (req, resp) => {
+    let data = req.body;
+    
+    mClient.find(data, res =>res.toArray()
+                 .then(response => resp.json(response)));
 });
 
 app.post('/add', upload.array(), (req, resp) => {
     let data = req.body;
     
-    resp.json(data);
+    mClient.insert(data,  (err, res) => {
+        if(err)
+            return resp.status(500).send(err);
+        resp.json(data);
+    });    
 });
+
+
 
 app.use((err, req, resp, next) => {
     console.log(err.message);
