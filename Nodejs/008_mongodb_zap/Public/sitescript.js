@@ -1,16 +1,28 @@
 $(document).ready(() => {
-    var index = 1;
+    var index = 1, 
+        outData = {};
     $.ajax({
-        url: '/getAllData',
+        url: '/getData',
         dataType: 'json',
-        method: 'GET',
+        method: 'POST',
+        data: {},
         success: getResult
     });
 
-    
+    $('#PhoneBox').on('click', 'li.data', (event)=> {       
+        outData.id = event.currentTarget.attributes[1].textContent;
+        $.ajax({
+            url: '/getData',
+            dataType: 'json',
+            method: 'POST',
+            data: {_id: outData.id},
+            success: setDataToForm
+        });
+
+    });
     $('#onSearch').click( () => {
-       if($('#search').val() === '')
-           return false;
+        if($('#search').val() === '')
+            return false;
         $('#PhoneBox').empty();        
         $.ajax({
             url: '/search',
@@ -20,9 +32,7 @@ $(document).ready(() => {
             success: getResult
         });
     });
-    
     // Событие добавление нового пользователя
-
     $('#adduser').click( () => {
         let data = sendData();
 
@@ -34,9 +44,7 @@ $(document).ready(() => {
             success: getResult
         }); 
     });
-
     //Создание нового текстового поля под дополнительный номер телефона
-
     $('.addphone').click( () => {           
         console.log('Click is work');            
         $('form').append('<input id=\"phone'+index+'\" type=\"text\">');
@@ -47,14 +55,14 @@ $(document).ready(() => {
         let out = '';
         if(Array.isArray(data)){
             data.forEach((doc) => {
-                out += `<li> ${doc.name} <ul class=\"phonein\"> `;
+                out += `<li class="data" data-id="${doc._id}" > ${doc.name} <ul class=\"phonein\"> `;
                 doc.phone.forEach((item) => {
                     out += `<li> ${item} </li>`;
                 });
                 out += '</ul></li>';
             })
         } else {
-            out += `<li> ${data.name} <ul class=\"phonein\"> `;
+            out += `<li class="data" data-id="${data._id}"> ${data.name} <ul class=\"phonein\"> `;
             data.phone.forEach((item) => {
                 out += `<li> ${item} </li>`;
             });
@@ -77,8 +85,26 @@ $(document).ready(() => {
                 data.phone.push($('#phone'+i).val());
                 $('#phone'+i).remove();
             }
-        };
-        console.log(data);
+            index = 1;
+        };        
         return data;
     };
+    function setDataToForm(Data){
+        let data = Data[0],
+            countKey = Object.keys(data).length;
+
+        if(countKey === 0)
+            return false;
+        $('#name').val(data.name);
+        $('#phone').val(data.phone[0]);
+
+        data.phone.forEach( (phoneNum, i) => {
+            if(i !== 0){                
+                $('form').append('<input id=\"phone'+index+'\" type=\"text\">');
+                $('#phone'+index).val(phoneNum);
+                index++;
+            }
+        })
+    }
+
 });

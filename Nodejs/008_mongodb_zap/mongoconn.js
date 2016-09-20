@@ -1,18 +1,18 @@
 'use strict';
-const Mongoconn = require('mongodb').MongoClient;
+const Mongoconn = require('mongodb').MongoClient,
+      ObjectId = require('mongodb').ObjectId;
 
 
- module.exports = function mongoconn(urL, collectioN){
+module.exports = function mongoconn(urL, collectioN){
     let url = urL || 'mongodb://localhost:27017/users',
-    collection = collectioN || 'users';
+        collection = collectioN || 'users';
 
     mongoconn._conn = (callback) => {
         Mongoconn.connect(url, (err, db) => {
             if(err)
                 return console.log(err);
             callback(db.collection(collection));
-            db.close();
-            console.log('DB is close');
+            db.close();           
         })
     };
     mongoconn.insert = (data, callback) => {
@@ -25,10 +25,12 @@ const Mongoconn = require('mongodb').MongoClient;
         });
     };
     mongoconn.find = (query, callback) => {
-       mongoconn._conn((db) => {
-           db.find(query, (err, docs) => {
-            return callback(docs);  
-           })            
+        if(query._id !== undefined)
+            query._id = new ObjectId(query._id);
+        mongoconn._conn((db) => {
+            db.find(query, (err, docs) => {
+                return callback(docs);  
+            })            
         }); 
     };
     mongoconn.update = (query, updata, opt, callback) => {
@@ -47,5 +49,5 @@ const Mongoconn = require('mongodb').MongoClient;
 mc.find({}, (res) => {
     res.toArray()
         .then(response => console.log(response));
-  
+
 })*/

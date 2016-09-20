@@ -22,15 +22,16 @@ app.get(/\.js/, (req, resp) => {
     resp.sendFile(path+'sitescript.js');
 });
 
-app.get('/getAllData', (req, resp) => {
-
-    mClient.find({}, res =>res.toArray()
+app.post('/getData', (req, resp) => {
+    let query = req.body;
+    
+    mClient.find(query, res =>res.toArray()
                  .then(response => resp.json(response)));
 });
 app.post('/search', upload.array(), (req, resp) => {
     let data = req.body;
     
-    mClient.find(data, res =>res.toArray()
+    mClient.find({name: new RegExp(data.name, 'i')}, res =>res.toArray()
                  .then(response => resp.json(response)));
 });
 
@@ -42,6 +43,16 @@ app.post('/add', upload.array(), (req, resp) => {
             return resp.status(500).send(err);
         resp.json(data);
     });    
+}); 
+
+app.post('/update', upload.array(), (req, resp) => {
+    let data = req.body;
+    
+    /*mClient.update(data,  (err, res) => {
+        if(err)
+            return resp.status(500).send(err);
+        resp.json(data);
+    });*/    
 });
 
 

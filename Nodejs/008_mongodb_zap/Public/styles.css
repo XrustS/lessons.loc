@@ -45,7 +45,8 @@ ul{
 li{
     padding: 5px;
     text-decoration: none;
-    display: block;    
+    display: block; 
+    cursor: pointer;
 }
 ul>li:nth-child(odd), li>ul>li:nth-child(even){
     background: #947060;
