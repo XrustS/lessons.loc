@@ -144,9 +144,15 @@ routeAPIRPC.post('/', function(req, res) {
 app.use('/api/v1/users/', routeAPIRast);
 app.use('/rpc', routeAPIRPC);
 
+app.use(function(req, resp, next){
+    res.status(404);
+    console.log('Not found URL: %s',req.url);
+    res.send({ error: 'Not found' });    
+});
+
 // Обработчик ошибок 500
 app.use((err, req, resp, next) => {
-    //colsole.error(err);
+    colsole.error(err);
     resp.status(500).send({error: 'Something went wrong'});    
 });
 

@@ -17,10 +17,10 @@ class Pokemon{
 class PokemonList extends Array{
     constuctor(...param){
         super.constructor( ...param.filter( (item) => {
-            return item instanceof Pokemon; 
-        }) ); 
-    }    
-    add(name, skil){        
+            return item instanceof Pokemon;
+        }) );
+    }
+    add(name, skil){
         if (name instanceof  Pokemon){
             this.push(name);
             clog('Добавлен -----');
@@ -30,7 +30,7 @@ class PokemonList extends Array{
             }else if ( name !== undefined && skil !== undefined ){
              this.push( new Pokemon(name, skil));
                 return true;
-        }        
+        }
         return false;
     }
     show(){
@@ -47,17 +47,17 @@ class PokemonList extends Array{
             this[index].show();
             clog('-------------');
             return this.splice(index,1)[0];
-        } return false;       
-    }    
+        } return false;
+    }
     max(){
            return this.find( (item) => {
                 return item.skil === Math.max(...this);
-            });     
-        
-        
+            });
+
+
     }
-    
-}    
+
+}
 
 
 
@@ -90,12 +90,4 @@ clog(found.max());
 
 function clog(...message) {
     console.log(...message);
-}
-
-
-
-
-
-
-
-
+};

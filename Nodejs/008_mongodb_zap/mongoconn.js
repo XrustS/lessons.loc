@@ -34,6 +34,9 @@ module.exports = function mongoconn(urL, collectioN){
         }); 
     };
     mongoconn.update = (query, updata, opt, callback) => {
+        if(query._id !== undefined)
+            query._id = new ObjectId(query._id);
+        
         mongoconn._conn((db) => {
             db.update(query, updata, opt) 
         });

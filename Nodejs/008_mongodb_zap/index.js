@@ -46,13 +46,15 @@ app.post('/add', upload.array(), (req, resp) => {
 }); 
 
 app.post('/update', upload.array(), (req, resp) => {
-    let data = req.body;
+    let data = req.body,
+        id = data._id;
     
-    /*mClient.update(data,  (err, res) => {
+    delete data._id;
+    mClient.update( {_id: id}, data, {}, (err, res) => {
         if(err)
             return resp.status(500).send(err);
         resp.json(data);
-    });*/    
+    });
 });
 
 

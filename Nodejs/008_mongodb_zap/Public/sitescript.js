@@ -8,18 +8,27 @@ $(document).ready(() => {
         data: {},
         success: getResult
     });
-
+    $('#edituser').click( () => {
+        $.ajax({
+            url: '/update',
+            dataType: 'json',
+            method: 'POST',
+            data: sendData(outData._id),
+            success: getResult           
+        });        
+    });
     $('#PhoneBox').on('click', 'li.data', (event)=> {       
-        outData.id = event.currentTarget.attributes[1].textContent;
+        outData._id = event.currentTarget.attributes[1].textContent;
+        console.log(outData._id);
         $.ajax({
             url: '/getData',
             dataType: 'json',
             method: 'POST',
-            data: {_id: outData.id},
+            data: {_id: outData._id},
             success: setDataToForm
         });
-
     });
+    // Событие нажатие на кнопку поиска    
     $('#onSearch').click( () => {
         if($('#search').val() === '')
             return false;
@@ -71,8 +80,10 @@ $(document).ready(() => {
         $('#PhoneBox').append(out);
     };
     // Функция для подготовки и отправки данных на сервер
-    function sendData(){
+    function sendData(id){        
         let data = {};
+        if(id !== undefined)
+            data._id = id;
 
         data.phone = [];
         data.name = $('#name').val();
