@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="PokemonApp">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Шаг 4 / Фреймворк AngularJS / Нетология</title>
+        <script src="../libs/angular-1.5.3/angular.min.js"></script>
+        <style type="text/css">
+            .fire{ color: red }
+            .grass{ color: green }
+            .water{ color: blue }
+            .electric{ color: yellow }
+        </style>
+    </head>
+
+    <body ng-controller="PokemonListCtrl">
+
+        Найти:
+        <input ng-model="myQuery"><br><br>
+
+        Сортировать по:
+        <select ng-model="myOrderProperty">
+            <option value="id">ID</option>
+            <option value="weight">Весу</option>
+            <option value="height">Росту</option>
+            <option value="name">По имени</option>
+        </select>
+
+        <select ng-model="filterType">
+            <option value="all" >All</option>
+            <option value="grass">grass</option>
+            <option value="fire">fire</option>
+            <option value="water">water</option>
+            <option value="electric">electric</option>
+            <option value="normal">Normal</option>            
+        </select>
+
+        <ul>
+            <li ng-repeat="pokemon in filterByType(filterType) | filter: myQuery | orderBy: myOrderProperty ">
+                <img ng-click='pokemonClik(pokemon.name)'  src="{{pokemon.ThumbnailImage}}">
+
+                <small>ID #{{pokemon.id }}</small>
+                <h1 ng-class="{ 'grass': pokemon.type[0] === 'grass' ,
+                              'water': pokemon.type[0] === 'water',
+                              'fire': pokemon.type[0] === 'fire',
+                              'electric': pokemon.type[0] === 'electric' }">{{pokemon.name | uppercase }}</h1>
+                <p>Вес: {{pokemon.weight}}, рост: {{pokemon.height}}</p>
+                <p>Тип: {{pokemon.type [0]}}</p>
+                <hr />
+            </li>
+        </ul>
+
+        <p ng-show="myQuery">
+            Выведены покемоны, содержащие
+            {{myQuery}}
+        </p>
+
+        <script src="js/step3/app.js"></script>
+        <script src="js/step3/controllers.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    </body>
+
+</html>
