@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-6 panel panel-default">
+        <div class="panel-body">
+            <h4>Поиск по пользователю:</h4>
+            <input  type="text" ng-model="query" > 
+        </div>
+    </div>    
+
+    <div class="col-md-6 panel panel-default">
+        <div class="panel-body">
+            <form name="userForm" novalidate>
+                <div class="form-group">
+                    <h4>Добавить нового пользователя</h4>
+                    <label>ФИО:</label>
+                    <input  type="text" ng-model="vm.newUser.name" required>
+                    <button type="button" class="btn btn-info" ng-disabled="userForm.$invalid"  ng-click="vm.addUser(vm.newUser)">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>
+<div ng-show="vm.showMessage" class="panel" ng-class="{'panel-success': vm.ok, 'panel-danger': !vm.ok}">
+    <div class="panel-heading">
+        {{vm.message}}
+    </div>
+</div>
+<h4>Количество пользователей: {{(vm.users | filter: query).length}}</h4>
+<div class="list-group">
+    <div  class="list-group-item"
+         data-ng-repeat="user in vm.users | filter: query">
+        <h4 class="list-group-item-heading">
+
+            {{user.userName | uppercase }}
+        </h4>
+        <i class="glyphicon glyphicon-trash"><input type="checkbox" ng-click="vm.deleteUser(user._id)"></i>    
+    </div>
+</div>
+

@@ -1,30 +1,28 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html ng-app="usersTask">
+<html ng-app="usersTasks">
     <head>
         <!-- META -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
         <title>Главная - Задачи</title>
-        <!-- <style>
-div{ border: 1px solid orange}
-</style> -->
+        <style>
+            .x{ outline: 1px solid orange}
+        </style> 
 
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
 
-        <script src="./libs/angular-1.5.3/angular.min.js"></script><!-- load angular -->
-        <script src="controller.js"></script>
+        <script src="../node_modules/angular/angular.js" ></script><!-- Загружаем angular -->
+        <script src="../node_modules/angular-route/angular-route.js" ></script><!-- Загружаем angular-route -->
 
     </head>
-    <body ng-controller="usersContrl">
+    <body >
         <div class="container">
             <div class="row">
                 <div class="panel panel-default">
@@ -39,53 +37,13 @@ div{ border: 1px solid orange}
                     </div>
                 </div>
             </div>
-            <div class="row">       
-                <div class="col-md-5 panel panel-default">
-                    <form >
-                        <div class="form-group">
-                            <h4>Добавить нового пользователя</h4>
-                            <label for="user.name">ФИО:</label>
-                            <input type="text" id="user.name">
-                            <button type="button" class="btn btn-info">Добавить</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-md-6 col-md-offset-1 panel panel-default">
-                    <form>
-                        <div class="form-group">
-                            <h4>Добавить новую задачу</h4>
-                            <label for="taskName">Название задачи:</label>
-                            <input type="text" id="taskName">
-                            <button type="button" class="btn btn-info">Добавить</button>
-                        </div>
-                    </form>
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-7">
-                    <h4>Задачи:</h4>
-                    <div ng-repeat="task in tasks" class="row panel panel-default">
-                        <div class="panel-body">
-                            {{task.taskName}} <select name="" id="">
-                            <option ng-repeat="user in users" value="{{user.firstName}}">{{user.firstName}}</option>
-                            </select>
-                            | Задача выполнена: <input type="checkbox" > | ♻  <input type="checkbox" name="" id="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-md-offset-1 panel panel-default">
-                    <div class="panel-heading">Пользователи:</div>
-                    <div class="panel-body">
-                        <ol>
-                            <li ng-repeat="user in users" >
-                                {{ user.firstName }} {{ user.lastName }} | <span class="glyphicon glyphicon-tras">♻ <input type="checkbox"> </span>
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-            </div>        
+            <ng-view></ng-view>                  
         </div>
+        <script src="TasksApp.js"></script>
+        <script src="src/Users/UsersCtrl.js"></script>
+        <script src="src/Tasks/TasksCtrl.js"></script>
+        <script src="src/services/Tasksservices.js"></script>
+
+
     </body>
 </html>

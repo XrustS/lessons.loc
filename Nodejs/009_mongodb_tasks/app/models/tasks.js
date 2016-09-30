@@ -3,14 +3,14 @@ const mongoose = require('mongoose');
 
 module.exports = {
   users: mongoose.model('users', {
-                                  firstName: String,
-                                  lastName: String,
+                                  userName: String,                                  
                                   update:{type: Date, default: Date.now}
   }),
   tasks: mongoose.model('tasks', {
                                   taskName: String,
-                                  status: String,
-                                  usersid:[mongoose.Schema.Types.ObjectId],
+                                  isClose: Boolean,
+                                  details: String,
+                                  usersId:[mongoose.Schema.Types.ObjectId],
                                   update:{type: Date, default: Date.now}
   })
 }

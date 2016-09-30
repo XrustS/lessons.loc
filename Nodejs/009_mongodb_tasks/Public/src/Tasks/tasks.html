@@ -1,0 +1,30 @@
+<div class="row">
+
+    <h1>Задачи пользователей</h1>
+    <div class="list-group">
+        <div  class="list-group-item"  
+             data-ng-repeat="task in vm.tasks " data-ng-class="{'bg-success': task.isClose, 'bg-info': !task.isClose}">
+            <div class="row"> 
+
+                <div class="col-sm-1">
+                    <i class="glyphicon glyphicon-trash">
+                        <input type="checkbox" ng-click="vm.deleteTask(task._id)">
+                    </i>
+                </div>
+                <div class="col-sm-9">
+                   <h4 class="list-group-item-heading">
+                    {{task.taskName | uppercase }}
+                    </h4>
+                    <p ng-repeat="id in task.usersId "><strong>Отвественный за задачу:</strong> {{id.userName}} </p>            
+                </div>
+                <div class="col-sm-2 x">
+                     <i ng-show="task.isClose" class="glyphicon glyphicon-ok">Задача закрыта</i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2>Users</h2>
+    <pre>{{vm.users | json}}</pre>
+    <h2>Tasks</h2>
+    <pre>{{vm.tasks | json}}</pre>
+</div>
