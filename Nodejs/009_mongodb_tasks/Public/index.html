@@ -1,7 +1,7 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html ng-app="usersTasks">
+<html ng-app="usersTasksApp">
     <head>
         <!-- META -->
         <meta charset="utf-8">
@@ -18,32 +18,33 @@
 
 
 
-        <script src="../node_modules/angular/angular.js" ></script><!-- Загружаем angular -->
-        <script src="../node_modules/angular-route/angular-route.js" ></script><!-- Загружаем angular-route -->
+        <script src="/angular/angular.js" ></script><!-- Загружаем angular -->
+        <script src="/angular-route/angular-route.js" ></script><!-- Загружаем angular-route -->
 
     </head>
     <body >
         <div class="container">
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-
-                        <div class="btn-group" role="group">
-                            <a class="btn btn-default" href="#/">Главная</a>
-                            <a class="btn btn-default" href="#/users">Пользователи</a>
-                            <a class="btn btn-default" href="#/tasks">Задачи</a>
-                        </div>
-
-                    </div>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
+        
+                <div class="btn-group" role="group">
+                    <a class="btn btn-default" href="#/tasks">Задачи</a>                    
+                    <a class="btn btn-default" href="#/users">Пользователи</a>                    
                 </div>
+        
             </div>
-            <ng-view></ng-view>                  
+        </div>
+    </div>
+    <ng-view></ng-view>                  
         </div>
         <script src="TasksApp.js"></script>
         <script src="src/Users/UsersCtrl.js"></script>
         <script src="src/Tasks/TasksCtrl.js"></script>
+        <script src="src/Tasks/TaskEdit/TaskEditCtrl.js"></script>
+        <script src="src/Users/UserEdit/UserEditCtrl.js"></script>
         <script src="src/services/Tasksservices.js"></script>
-
-
+        
+        
     </body>
 </html>

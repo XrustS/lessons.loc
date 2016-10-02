@@ -1,7 +1,7 @@
-var usersTasks = angular.module('usersTasks', ['ngRoute']);
+var usersTasksApp = angular.module('usersTasksApp', ['ngRoute']);
 
 angular
-    .module('usersTasks')
+    .module('usersTasksApp')
     .config(['$routeProvider',
              function config($routeProvider) {
 
@@ -14,12 +14,16 @@ angular
                      templateUrl: 'src/Tasks/tasks.html',
                      controller: 'TasksCtrl as vm'
                  }).
-                 when('/', {
-                     templateUrl: 'src/Main/main.html',
-                     controller: 'MainCtrl as vm'
-                 }).        
+                 when('/tasks/:taskId', {
+                     templateUrl: 'src/Tasks/TaskEdit/taskEdit.html',
+                     controller: 'TaskEditCtrl as vm'
+                 }). 
+                 when('/users/:taskId', {
+                     templateUrl: 'src/Users/UserEdit/useredit.html',
+                     controller: 'UserEditCtrl as vm'
+                 }).                 
                  otherwise({
-                     redirectTo: '/'
+                     redirectTo: '/tasks'
                  });
              }
             ]);

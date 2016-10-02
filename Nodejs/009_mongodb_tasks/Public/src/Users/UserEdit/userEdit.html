@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="col-md-12">
+        <form action="">
+            <div class="form-group">
+                <label for="">Имя пользователя задачи</label>
+                <input type="text"  class="form-control" ng-model="vm.userEdit.userName">
+            </div>                               
+            <button class="btn btn-primary" type="submit" ng-click="vm.setUserUpdate(vm.userEdit)">Редактировать пользователя</button>
+        </form>
+        <br />
+        <div ng-show="vm.showMessage" class="panel" ng-class="{'panel-success': vm.ok, 'panel-danger': !vm.ok}">
+            <div class="panel-heading">
+                {{vm.message}}
+            </div>
+        </div>
+    </div>
+</div>

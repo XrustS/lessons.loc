@@ -11,9 +11,25 @@ module.exports = (app) => {
             resp.json(docs);
         });
     });
+    app.get('/api/v1.0/users/:id', (req, resp) => {
+        Users.find({_id: req.params.id})
+            .then( (err, docs) => {
+            if(err)
+                return resp.send(err);
+            resp.json(docs);
+        });
+    });
 
     app.get('/api/v1.0/tasks', (req, resp) => {
         Tasks.find({})
+            .then( (err, docs) => {
+            if(err)
+                return resp.send(err);
+            resp.json(docs);
+        });
+    });
+    app.get('/api/v1.0/tasks/:id', (req, resp) => {
+        Tasks.find({_id: req.params.id})
             .then( (err, docs) => {
             if(err)
                 return resp.send(err);
@@ -26,47 +42,56 @@ module.exports = (app) => {
 
         Users.create({ userName: name }, err => {
             if(err)
-                return resp.status(500).send('Create new user is failed.');
-            resp.status(200).send('New user is create!')
+                return resp.status(500).send('Возникла ошибка создания нового пользователя.');
+            resp.status(200).send('Новый пользователь успешно создан!')
         });
     });
     // Создание задачи
     app.post('/api/v1.0/tasks', (req, resp) => {
         let data = req.body;    
         if(Object.keys(data).length === 0)
-            return resp.status(500).send('Data is empty!');
+            return resp.status(500).send('Данные отсутсвуют.');
         Tasks.create(data, err => {
             if(err)
                 return resp.status(500).send('Create new task is failed.');
-            resp.status(200).send('New task is create!')
+            resp.status(200).send('Новая задача успешно создана!')
         });
     });
     // Изменение данных пользователя
     app.put('/api/v1.0/users/:id', (req, resp) => {
         let query = { _id: req.params.id },
-            data = { $set: { userName: req.body.name } };
-        Users.update(query, data).find(query, (err, results) => {
-            resp.json(results) 
-        });
-        resp.status(500);
+            data = req.body;
+        
+        Users.findOne(query, (err, doc) => {
+           if(err)
+                return resp.status(500).send(err);
+            doc.userName = data.userName;            
+            doc.save();
+            resp.send(`Пользователь ${doc._id} успешно обновлен!`);
+        })
     });
     //  Изменение данных задачи
     app.put('/api/v1.0/tasks/:id', (req, resp) => {
         let query = { _id: req.params.id },            
-            data = req.body.usersId ? { $push: { usersId: req.body.usersId }} : { $set: req.body };
-
-        Tasks.update(query, data, {}, (err, result) => {
-            if(err)
+            data = req.body; 
+        
+        Tasks.findOne(query, (err, doc) => {
+           if(err)
                 return resp.status(500).send(err);
-            resp.json(result);
-        })    
+            doc.taskName = data.taskName;
+            doc.isClose = data.isClose;
+            doc.usersId[0] = data.usersId[0];
+            doc.markModified('array');
+            doc.save();
+            resp.send(`Задача ${doc._id} успешно обновлен!`);
+        })        
     });
     // Удаление пользователя
     app.delete('/api/v1.0/users/:id', (req, resp) => {
         let query = { _id: req.params.id }; 
         Users.remove(query, (err, result) => {
             if(err)
-                return resp.status(500).send('Error remove user: '+req.params.id);
+                return resp.status(500).send('Ошибка удаления пользователя: '+req.params.id);
             resp.json(result);
         })
     });
@@ -75,8 +100,8 @@ module.exports = (app) => {
         let query = { _id: req.params.id }; 
         Tasks.remove(query, (err, result) => {
             if(err)
-                return resp.status(500).send('Error remove task: '+req.params.id);
-            resp.json(result);
+                return resp.status(500).send('Ошибка удаления задачи: '+req.params.id);
+            resp.send(`Задача ${req.params.id} успешно удалена !`);
         })
     });   
     
@@ -128,14 +153,7 @@ module.exports = (app) => {
             resp.json(result);
         });
     });
-    // Подключаем angular-route
-    app.get(/angular-route.js/, function(req, resp) {        
-        resp.sendfile('./node_modules/angular-route/angular-route.js');
-    });
-    // Подключаем angular
-    app.get(/angular.js/, function(req, resp) {        
-        resp.sendfile('./node_modules/angular/angular.js');
-    });
+    
     // ------- Загрузка изначальной страницы
     app.get('*', function(req, res) {
         res.sendfile('./public/index.html');

@@ -11,9 +11,17 @@ const methodOverride = require('method-override'); // поддержка мет�
 const morgan = require('morgan'); // Логирование запросов в консоль (express)
 // Конфигурирование app
 mongoose.connect(dbConfig.url);
-
-app.use(express.static(__dirname + '/public')); 				
-//app.use(morgan('dev')); 										
+// Обработчик ошибок при подключении к mongodb
+mongoose.connection.on('error',function (err) {  
+  console.log('Mongoose default connection error: ' + err);
+});
+// шарим public где живет наш Front End
+app.use(express.static(__dirname + '/public'));
+// шарим framework angular
+app.use('/angular', express.static(__dirname + '/node_modules/angular')); 				
+app.use('/angular-route', express.static(__dirname + '/node_modules/angular-route')); 
+// Логирование http запросов и выдача их в консоль
+app.use(morgan('dev')); 										
 app.use(bodyParser.urlencoded({'extended':'true'})); 			
 app.use(bodyParser.json()); 								
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); 

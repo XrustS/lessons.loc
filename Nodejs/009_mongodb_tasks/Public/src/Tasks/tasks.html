@@ -1,30 +1,62 @@
 <div class="row">
 
     <h1>Задачи пользователей</h1>
-    <div class="list-group">
-        <div  class="list-group-item"  
-             data-ng-repeat="task in vm.tasks " data-ng-class="{'bg-success': task.isClose, 'bg-info': !task.isClose}">
-            <div class="row"> 
-
-                <div class="col-sm-1">
-                    <i class="glyphicon glyphicon-trash">
-                        <input type="checkbox" ng-click="vm.deleteTask(task._id)">
-                    </i>
+    <div class="panel">
+        <div class="panel-default">
+            <h3>Добавление новой задачи</h3>
+            <div class="row">
+                <div class="col-md-9">
+                    <form name="addNewTask">
+                        <div class="form-group">
+                            <label for="">Название задачи</label>
+                            <input type="text"  class="form-control" ng-model="vm.newTask.taskName" required>
+                        </div>
+                        <div class="form-group">       
+                            <label for="">
+                                <input type="checkbox" ng-model="vm.newTask.isClose" > Задача закрыта
+                            </label>                
+                        </div>    
+                        <div class="form-group">    
+                            <label for="">Пользователь за кем закреплена задача:</label>
+                            <select ng-model="vm.newTask.usersId[0]">
+                            <option value="false">--- Выбери пользователя --- </option>
+                            <option ng-repeat="user in vm.users" value="{{user._id}}">{{user.userName}}</option>
+                            </select>
+                        </div>    
+                        <button ng-disabled="addNewTask.$invalid" class="btn btn-success" type="submit" ng-click="vm.addTask(vm.newTask)">Добавть задачу</button>
+                    </form>
+                    <br />
+                    <div ng-show="vm.showMessage" class="panel" ng-class="{'panel-success': vm.ok, 'panel-danger': !vm.ok}">
+                        <div class="panel-heading">
+                            {{vm.message}}
+                        </div>
+                    </div>
                 </div>
-                <div class="col-sm-9">
-                   <h4 class="list-group-item-heading">
-                    {{task.taskName | uppercase }}
-                    </h4>
-                    <p ng-repeat="id in task.usersId "><strong>Отвественный за задачу:</strong> {{id.userName}} </p>            
-                </div>
-                <div class="col-sm-2 x">
-                     <i ng-show="task.isClose" class="glyphicon glyphicon-ok">Задача закрыта</i>
+                <div class="col-md-3">
+                   <h4>Закрытые задачи у пользователей</h4>
+                    <ol>
+                        <li ng-repeat="item in vm.usersAggData">{{item._id}} <span class="badge">{{item.count}}</span></li>
+                    </ol>
                 </div>
             </div>
         </div>
     </div>
-    <h2>Users</h2>
-    <pre>{{vm.users | json}}</pre>
-    <h2>Tasks</h2>
-    <pre>{{vm.tasks | json}}</pre>
+    <div class="list-group">     
+
+        <a href="#/tasks/{{task._id}}" ng-repeat="task in vm.tasks " ng-class="{'bg-success': task.isClose, 'bg-info': task.isClose}"> 
+            <div  class="list-group-item" >
+                <div class="row"> 
+                    <div class="col-sm-9">
+                        <h4 class="list-group-item-heading">
+                            {{task.taskName | uppercase }}
+                        </h4>
+                        <p ng-repeat="id in task.usersId "><strong>Отвественный за задачу:</strong> {{id.userName}} </p>            
+                    </div>
+                    <div class="col-sm-2">
+                        <i ng-show="task.isClose" class="glyphicon glyphicon-ok"> Задача закрыта</i>
+                    </div>
+                </div>
+            </div>
+            </a>
+    </div>    
 </div>

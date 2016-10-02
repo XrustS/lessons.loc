@@ -1,5 +1,5 @@
 
-usersTasks.controller('UsersCtrl', function(TasksService) {
+usersTasksApp.controller('UsersCtrl', function(TasksService) {
 
     var vm = this;
     // Выводим всех пользователей
