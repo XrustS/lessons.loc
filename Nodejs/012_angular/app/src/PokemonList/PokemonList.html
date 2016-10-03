@@ -1,0 +1,43 @@
+<div class="row">
+    <div class="col-md-8">
+        <h3>Список покемонов</h3>
+        <div ng-if="!pokemonLoaded">
+            <span class="glyphicon glyphicon-refresh"></span>
+            Loading...
+        </div>
+        <div ng-if="pokemonLoaded">
+            <div class="list-group">
+               
+                <a href="#/mypokemons/{{myPokemon.objectId}}" class="list-group-item" ng-repeat="myPokemon in myPokemons">
+                    <h4>{{myPokemon.name}}</h4>My Pokemon!
+                </a>
+               
+                <a href="#/pokemons/{{singlePokemon.name }}" class="list-group-item" ng-repeat="singlePokemon in pokemons">
+            
+                    <h4>
+                        {{singlePokemon.name | uppercase }}
+                    </h4>
+            
+                </a>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4">
+        <h3>Список ягод</h3>
+        <div ng-if="!berryLoaded">
+            <span class="glyphicon glyphicon-refresh"></span>
+            Loading...
+        </div>
+        <div ng-if="berryLoaded">
+            <div class="list-group">
+                <div class="list-group-item" ng-repeat="singleBerry in berries">
+                    <h4>
+                        {{singleBerry.name | uppercase }}
+                    </h4>
+                    </a>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
