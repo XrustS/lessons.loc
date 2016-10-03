@@ -1,0 +1,23 @@
+<style>
+    .ng-dirty.ng-invalid {
+        border-color: #FA787E;
+    }
+
+    .ng-dirty.ng-valid {
+        border-color: #78FA89;
+    }
+
+</style>
+
+<div class="alert alert-success" role="alert" ng-if="editSuccess">Привет, покемон {{pokemonId}}!</div>
+<form name="pokemonForm" novalidate>
+    <div class="form-group">
+        <label>Имя</label>
+        <input class="form-control" ng-model="pokemon.name" type="text" placeholder="Имя" required>
+    </div>
+    <div class="form-group">
+        <label>Вес</label>
+        <input class="form-control" ng-model="pokemon.weight" type="text" placeholder="Вес">
+    </div>    
+    <button type="submit" class="btn btn-default" ng-click="editPokemon(pokemon.objectId, pokemon)" ng-disabled="pokemonForm.$invalid">Редактировать покемона</button>
+</form>
