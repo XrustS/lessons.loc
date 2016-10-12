@@ -1,0 +1,13 @@
+<md-content calss="md-padding" style="max-width: 500px;">
+    <md-toolbar layout="row" class="md-hue-3">
+        <div class="md-toolbar-tools">
+            <span>Покемоны</span>
+        </div>
+    </md-toolbar>
+
+    <md-list flex>    
+        <md-subheader class="md-no-sticky">Всего ({{$ctrl.pokemons.length}}) покемонов</md-subheader>        
+        <pokemon-list-item pokemon="singlePokemon" ng-repeat="singlePokemon in $ctrl.pokemons"></pokemon-list-item>
+    </md-list>
+
+</md-content>

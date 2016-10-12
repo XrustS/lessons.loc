@@ -1,0 +1,27 @@
+<md-progress-linear md-mode="query" ng-disabled="$ctrl.pokemonLoaded">  
+</md-progress-linear>
+<div class="bottom-block" ng-if="!$ctrl.pokemonLoaded">
+    <span>Loading...</span>
+</div>
+
+<md-content layout-align="left" layout="row" flex="33">
+
+    <md-card>
+        <md-card-header>
+            <md-card-avatar>
+                <img class="md-user-avatar" src="./assets/img/card-avatar.png" alt="">
+            </md-card-avatar>
+            <md-card-header-text>
+                <span class="md-title">Покемон {{$ctrl.pokemon.name | uppercase }}</span>
+            </md-card-header-text>
+        </md-card-header>
+
+        <img src="./assets/img/481195_cr.jpg" class="md-card-image" alt="Washed Out">
+
+
+
+        <md-card-content>
+            <pokenon-detail-form disablecontroltab="$ctrl.activeControlTab" pokemon="$ctrl.pokemon" ></pokenon-detail-form>
+        </md-card-content>
+    </md-card>
+</md-content>

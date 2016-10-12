@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="PokemonApp">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Фреймворк AngularJS / Нетология</title>
+        <script src="../node_modules/angular/angular.js"></script>
+        <script src="../node_modules/angular-route/angular-route.js"></script>
+        <script src="../node_modules/angular-resource/angular-resource.js"></script>
+
+        <!-- <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
+        <link href="../node_modules/angular-material/angular-material.css" rel="stylesheet" >
+
+        <script src="../node_modules/restangular/dist/restangular.js"></script>
+        <script src="../node_modules/lodash/lodash.js"></script>
+
+        <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+        <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+
+        <script src="../node_modules/angular-animate/angular-animate.js"></script>
+        <script src="../node_modules/angular-aria/angular-aria.js"></script>
+        <script src="../node_modules/angular-material/angular-material.js"></script>
+
+    </head>
+
+    <body>
+
+        <div class="container">
+            <md-content class="md-padding">
+                 <md-nav-bar md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+      <md-nav-item  md-nav-href="#/" name="page1">Главная</md-nav-item>
+      <md-nav-item  md-nav-href="#/pokemons" name="page2">Покемоны</md-nav-item>
+      <md-nav-item  md-nav-href="#/create" name="page3">Добавить нового</md-nav-item>
+            </md-content>
+
+            
+<div class="ext-content">
+            <ng-view></ng-view>
+            </div>
+
+        </div>
+
+        <script src="src/PokemonApp.js"></script>
+        <script src="src/CreatePokemon/CreatePokemonCtrl.js"></script>
+        <script src="src/PokemonList/PokemonListComponent.js"></script>
+        <script src="src/PokemonListItem/PokemonListItemComponent.js"></script>
+        <script src="src/PokemonDetail/PokemonDetailComponent.js"></script>
+        <script src="src/PokemonDetailForm/PokemonDetailFormComponent.js"></script>        
+<!--        <script src="src/PokemonDetail/PokemonDetailCtrl.js"></script>-->
+        <script src="src/PokemonsService/PokemonsService.js"></script>
+        <script src="src/EditPokemon/EditPokemonCtrl.js"></script>
+
+    </body>
+
+</html>
