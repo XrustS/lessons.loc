@@ -7,16 +7,29 @@
         border-color: #78FA89;
     }
 
+    .tomato {
+        color: tomato;
+    }
+
 </style>
 
 <form name="pokemonForm" novalidate>
+
+    <div ng-show="pokemonForm.inputName.$invalid && !pokemonForm.inputName.$pristine" class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Ошибка:</span>
+        Поле имя должно быть заполнено, и первая буква должна быть заглавная, пример:  Маша!
+    </div>
+
+
     <div class="form-group">
-        <label>Имя</label>
-        <input class="form-control" name="inputName" ng-parser="\\D+" data-ng-model="vm.newPokemon.name" type="text" placeholder="Имя" required>
+        <label>Имя: </label><span class="glyphicon glyphicon-asterisk tomato" aria-hidden="true"></span>
+
+        <input class="form-control" name="inputName" ng-pattern="'\^[A-ZА-Я].*'" data-ng-model="vm.newPokemon.name" type="text" placeholder="Имя" required>
     </div>
     <div class="form-group">
         <label>Вес</label>
-        <input class="form-control" data-ng-model="vm.newPokemon.weight" type="text" placeholder="Вес">
+        <input class="form-control" data-ng-model="vm.newPokemon.weight" type="number" placeholder="Вес">
     </div>
     <div class="checkbox">
         <label>
@@ -27,6 +40,11 @@
     <button type="submit" class="btn btn-default" data-ng-click="vm.addPokemon(vm.newPokemon)"
             data-ng-disabled="pokemonForm.$invalid">Добавить</button>
 </form>
+<!--
 
-inputName = {{pokemonForm.inputName.$error.parse}}
+<p>$error = {{pokemonForm.inputName.$error}}</p>
+<p>$valid = {{pokemonForm.inputName.$valid}}</p>
+<p>$pristine = {{pokemonForm.inputName.$pristine}}</p>
+
 <pre>input vm.newPokemon.name = {{vm.newPokemon.name | json}}</pre>
+-->

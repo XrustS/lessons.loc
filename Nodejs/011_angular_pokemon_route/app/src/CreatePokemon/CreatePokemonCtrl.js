@@ -8,5 +8,14 @@ pokemonApp.controller('CreatePokemonCtrl', function() {
         console.log(myPokemon);
         vm.newPokemon = {};
     };
+    
+    // Validation
+    
+    vm.isRequired = (condition) =>{
+        if(conditon.required)
+            return true;
+        return false;
+    }
+   
 
 });
