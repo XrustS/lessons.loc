@@ -12,4 +12,3 @@ module.exports =  class Pokemon{
         return +this.skil;
     }
 }
-

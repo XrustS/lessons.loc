@@ -4,20 +4,20 @@ const Pokemon = require('./PokemonClass'); // подключил для пров
 module.exports = class PokemonList extends Array{
     constuctor(...param){
         super.constructor( ...param.filter( (item) => {
-            return item instanceof Pokemon; 
-        }) ); 
-    }    
-    add(name, skil){        
+            return item instanceof Pokemon;
+        }) );
+    }
+    add(name, skil){
         if (name instanceof  Pokemon){
             this.push(name);
-            console.log('Добавлен -----');
-            name.show();
-            console.log('-------------');
+            // console.log('Добавлен -----');
+            // name.show();
+            // console.log('-------------');
             return true;
         }else if ( name !== undefined && skil !== undefined ){
             this.push( new Pokemon(name, skil));
             return true;
-        }        
+        }
         return false;
     }
     show(){
@@ -26,18 +26,22 @@ module.exports = class PokemonList extends Array{
         });
         console.log('Общее количество покемонов в списке: %s', this.length )
     }
-    get(name){                                                  // Надеюсь по пункту №5 я уложился?!))
+    get(name){
         let index = this.findIndex( (item) =>{
             return item.name === name });
+
         if (index !== -1){
-            console.log('Удален -----');
-            this[index].show();
-            console.log('-------------');
+
+            // console.log('Удален -----');
+            // this[index].show();
+            // console.log('-------------');
+
             return this.splice(index,1)[0];
-        } return false;       
-    }    
+        } return false;
+    }
     max(){
         let max = Math.max(...this);
-        return this.find( (item) => item.skil === max);          
+
+        return this.find( (item) => item.skil === max);
     }
-} 
+}

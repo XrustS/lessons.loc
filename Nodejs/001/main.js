@@ -18,8 +18,11 @@ let found = new PokemonList(pok1),
     lost = new PokemonList(pok2);
 // Генерируем список покемонов и заполняем списки
 namepok.forEach( (item, i) =>{
-    if ( i < (namepok.length / 2) ){
-        found.add(item, random( 2, 100 ));
+    
+    if ( i < (namepok.length / 2) ){        
+        
+        found.add(item, random( 2, 100 ));        
+        
     } else { lost.add(item, random( 2, 100 ));};
 });
 
