@@ -3,15 +3,15 @@
 const random = require('./Lib/random');
 
 class Pokemon{
-    constructor( name, skil ){
+    constructor( name, skill ){
         this.name = name;
-        this.skil = +skil;
+        this.skill = +skill;
     }
     show(){
-        clog( `Покемон: ${this.name} уровень: ${this.skil}`);
+        clog( `Покемон: ${this.name} уровень: ${this.skill}`);
     }
     valueOf(){
-        return +this.skil;
+        return +this.skill;
     }
 }
 class PokemonList extends Array{
@@ -20,15 +20,15 @@ class PokemonList extends Array{
             return item instanceof Pokemon;
         }) );
     }
-    add(name, skil){
+    add(name, skill){
         if (name instanceof  Pokemon){
             this.push(name);
             clog('Добавлен -----');
             name.show();
             clog('-------------');
             return true;
-            }else if ( name !== undefined && skil !== undefined ){
-             this.push( new Pokemon(name, skil));
+            }else if ( name !== undefined && skill !== undefined ){
+             this.push( new Pokemon(name, skill));
                 return true;
         }
         return false;
@@ -51,7 +51,7 @@ class PokemonList extends Array{
     }
     max(){
            return this.find( (item) => {
-                return item.skil === Math.max(...this);
+                return item.skill === Math.max(...this);
             });
 
 

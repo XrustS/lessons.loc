@@ -1,14 +1,14 @@
 'use strict';
 
 module.exports =  class Pokemon{
-    constructor( name, skil ){
+    constructor( name, skill ){
         this.name = name;
-        this.skil = +skil;
+        this.skill = +skill;
     }
     show(){
-        console.log( `Покемон: ${this.name} уровень: ${this.skil}`);
+        console.log( `Покемон: ${this.name} уровень: ${this.skill}`);
     }
     valueOf(){
-        return +this.skil;
+        return +this.skill;
     }
 }

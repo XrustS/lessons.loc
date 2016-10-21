@@ -7,15 +7,15 @@ module.exports = class PokemonList extends Array{
             return item instanceof Pokemon;
         }) );
     }
-    add(name, skil){
+    add(name, skill){
         if (name instanceof  Pokemon){
             this.push(name);
             // console.log('Добавлен -----');
             // name.show();
             // console.log('-------------');
             return true;
-        }else if ( name !== undefined && skil !== undefined ){
-            this.push( new Pokemon(name, skil));
+        }else if ( name !== undefined && skill !== undefined ){
+            this.push( new Pokemon(name, skill));
             return true;
         }
         return false;
@@ -42,6 +42,6 @@ module.exports = class PokemonList extends Array{
     max(){
         let max = Math.max(...this);
 
-        return this.find( (item) => item.skil === max);
+        return this.find( (item) => item.skill === max);
     }
 }
